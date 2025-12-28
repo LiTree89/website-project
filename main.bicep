@@ -262,7 +262,7 @@ module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastio
     location: location
     skuName: bastionConfiguration.?sku ?? 'Standard'
     enableTelemetry: enableTelemetry
-    virtualNetworkResourceId: virtualNetwork?.outputs.resourceId ?? ''
+    virtualNetworkResourceId: virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId
     disableCopyPaste: bastionConfiguration.?disableCopyPaste
     enableFileCopy: bastionConfiguration.?enableFileCopy
     enableIpConnect: bastionConfiguration.?enableIpConnect
@@ -378,12 +378,12 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity?.properties.principalId ?? ''
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity?.properties.principalId ?? ''
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Key Vault Administrator'
             principalType: 'ServicePrincipal'
           }
@@ -431,12 +431,12 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity?.properties.principalId ?? ''
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity?.properties.principalId ?? ''
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Storage Blob Data Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -489,11 +489,11 @@ module applicationInsights 'br/public:avm/res/insights/component:0.3.1' = {
     location: location
     kind: 'web'
     enableTelemetry: enableTelemetry
-    workspaceResourceId: logAnalyticsWorkspace?.id ?? ''
+    workspaceResourceId: logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.id
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -511,21 +511,21 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
     location: location
     enableTelemetry: enableTelemetry
     kind: 'Hub'
-    associatedApplicationInsightsResourceId: applicationInsights?.outputs.resourceId ?? ''
-    associatedKeyVaultResourceId: keyVault?.outputs.resourceId ?? ''
-    associatedStorageAccountResourceId: storageAccount?.outputs.resourceId ?? ''
-    associatedContainerRegistryResourceId: containerRegistry?.outputs.resourceId ?? ''
+    associatedApplicationInsightsResourceId: applicationInsights == null ? '' : applicationInsights.outputs.resourceId
+    associatedKeyVaultResourceId: keyVault == null ? '' : keyVault.outputs.resourceId
+    associatedStorageAccountResourceId: storageAccount == null ? '' : storageAccount.outputs.resourceId
+    associatedContainerRegistryResourceId: containerRegistry == null ? '' : containerRegistry.outputs.resourceId
     workspaceHubConfig: {
       defaultWorkspaceResourceGroup: resourceGroup().id
     }
     managedIdentities: managedIdentityName != null
       ? {
           userAssignedResourceIds: [
-            userAssignedIdentity?.id ?? ''
+            userAssignedIdentity == null ? '' : userAssignedIdentity.id
           ]
         }
       : null
-    primaryUserAssignedIdentity: managedIdentityName != null ? (userAssignedIdentity?.id ?? null) : null
+    primaryUserAssignedIdentity: managedIdentityName != null ? (userAssignedIdentity == null ? null : userAssignedIdentity.id) : null
     computes: workspaceConfiguration.?computes
     managedNetworkSettings: {
       isolationMode: workspaceConfiguration.?networkIsolationMode ?? 'AllowInternetOutbound'
@@ -551,7 +551,7 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -572,11 +572,11 @@ module workspaceProject 'br/public:avm/res/machine-learning-services/workspace:0
     location: location
     enableTelemetry: enableTelemetry
     kind: 'Project'
-    hubResourceId: workspaceHub?.outputs.resourceId ?? ''
+    hubResourceId: workspaceHub == null ? '' : workspaceHub.outputs.resourceId
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -675,10 +675,10 @@ output bastionResourceId string = createBastion ? (bastion?.outputs.resourceId ?
 output bastionName string = createBastion ? (bastion?.outputs.name ?? '') : ''
 
 @description('The resource ID of the virtual machine.')
-output virtualMachineResourceId string = createVirtualMachine ? virtualMachine.outputs.resourceId : ''
+output virtualMachineResourceId string = createVirtualMachine ? (virtualMachine?.outputs.resourceId ?? '') : ''
 
 @description('The name of the virtual machine.')
-output virtualMachineName string = createVirtualMachine ? virtualMachine.outputs.name : ''
+output virtualMachineName string = createVirtualMachine ? (virtualMachine?.outputs.name ?? '') : ''
 
 // ================ //
 // Definitions      //
