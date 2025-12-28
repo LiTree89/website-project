@@ -23,15 +23,28 @@ resource swaProd 'Microsoft.Web/staticSites@2023-01-01' = {
     name: 'Standard'
   }
 }
-resource swaPreview 'Microsoft.Web/staticSites@2023-01-01' = {
-  name: swaPreviewName
+// ai-platform-baseline.bicep
+// Clean, deployable Azure baseline for website-project
+
+param location string = resourceGroup().location
+param swaProdName string = 'litlab-swa-prod'
+param funcApiName string = 'litlab-func-api'
+param backendAppName string = 'litlab-app-backend'
+param copilotAppName string = 'litlab-app-copilot'
+param signalrName string = 'litlab-signalr'
+param cosmosName string = 'litlab-cosmos'
+param storageName string = 'litlabstorage'
+param keyVaultName string = 'litlab-kv'
+param appInsightsName string = 'litlab-insights'
+
+resource swaProd 'Microsoft.Web/staticSites@2023-01-01' = {
+  name: swaProdName
   location: location
   sku: {
     name: 'Standard'
   }
 }
 
-// Azure Function App (Node 20)
 resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
   name: funcApiName
   location: location
@@ -47,7 +60,6 @@ resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
-// App Service for backend
 resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
   name: backendAppName
   location: location
@@ -63,7 +75,6 @@ resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
-// App Service for copilot-engine
 resource copilotApp 'Microsoft.Web/sites@2023-01-01' = {
   name: copilotAppName
   location: location
@@ -79,7 +90,6 @@ resource copilotApp 'Microsoft.Web/sites@2023-01-01' = {
   }
 }
 
-// Azure SignalR Service
 resource signalr 'Microsoft.SignalRService/SignalR@2023-08-01-preview' = {
   name: signalrName
   location: location
@@ -97,7 +107,6 @@ resource signalr 'Microsoft.SignalRService/SignalR@2023-08-01-preview' = {
   }
 }
 
-// Cosmos DB (SQL API)
 resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   name: cosmosName
   location: location
@@ -122,7 +131,6 @@ resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
   }
 }
 
-// Storage Account
 resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageName
   location: location
@@ -135,7 +143,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   }
 }
 
-// Key Vault
 resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
   name: keyVaultName
   location: location
@@ -145,14 +152,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
       family: 'A'
       name: 'standard'
     }
-    accessPolicies: [] // Managed identities will be granted access after deployment
+    accessPolicies: []
     enabledForDeployment: true
     enabledForTemplateDeployment: true
     enabledForDiskEncryption: true
   }
 }
 
-// Application Insights
 resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
@@ -161,37 +167,14 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     Application_Type: 'web'
   }
 }
-
-// Outputs for reference
-output swaProdUrl string = swaProd.properties.defaultHostname
-output swaPreviewUrl string = swaPreview.properties.defaultHostname
-output funcApiUrl string = funcApi.properties.defaultHostName
-output backendAppUrl string = backendApp.properties.defaultHostName
-output copilotAppUrl string = copilotApp.properties.defaultHostName
-output signalrUrl string = signalr.properties.hostName
-output cosmosEndpoint string = cosmos.properties.documentEndpoint
-output storageUrl string = storage.properties.primaryEndpoints.web
-output keyVaultUri string = keyVault.properties.vaultUri
-output appInsightsKey string = appInsights.properties.InstrumentationKey
-// ============== //
-
-#disable-next-line no-deployments-resources
-resource avmTelemetry 'Microsoft.Resources/deployments@2023-07-01' = if (enableTelemetry) {
-  name: '46d3xbcp.ptn.aiplatform-baseline.${replace('-..--..-', '.', '-')}.${substring(uniqueString(deployment().name, location), 0, 4)}'
-  properties: {
-    mode: 'Incremental'
-    template: {
-      '$schema': 'https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#'
-      contentVersion: '1.0.0.0'
-      resources: []
-      outputs: {
-        telemetry: {
-          type: 'String'
-          value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
-        }
-      }
-    }
-  }
+outputs: {
+telemetry: {
+type: 'String'
+value: 'For more information, see https://aka.ms/avm/TelemetryInfo'
+}
+}
+}
+}
 }
 
 module storageAccount_privateDnsZones 'br/public:avm/res/network/private-dns-zone:0.3.1' = [
