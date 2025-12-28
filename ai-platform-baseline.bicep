@@ -58,7 +58,9 @@ var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?
 
 var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
 
-var subnetResourceId = (createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds)) ? virtualNetwork.outputs.subnetResourceIds[0] : null
+var subnetResourceId = (createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds))
+  ? virtualNetwork.outputs.subnetResourceIds[0]
+  : null
 
 var mlTargetSubResource = 'amlworkspace'
 
