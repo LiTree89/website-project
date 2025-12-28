@@ -1,6 +1,8 @@
 {
     // VS Code terminal troubleshooting defaults
+    // Set default terminal to Command Prompt for maximum compatibility
     "terminal.integrated.defaultProfile.windows": "Command Prompt",
+    // Define available terminal profiles
     "terminal.integrated.profiles.windows": {
         "Command Prompt": {
             "path": [
@@ -13,8 +15,19 @@
                 "${env:windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
             ],
             "args": []
+        },
+        "Git Bash": {
+            "source": "Git Bash"
         }
     },
+    // Ensure environment variables are inherited
+    "terminal.integrated.inheritEnv": true,
+    // Clear any custom environment overrides
     "terminal.integrated.env.windows": {},
-    "terminal.integrated.inheritEnv": true
+    // Fallback shell in case default fails
+    "terminal.integrated.shellIntegration.enabled": true,
+    // Enable persistent sessions for troubleshooting
+    "terminal.integrated.enablePersistentSessions": true,
+    // Show full error output for troubleshooting
+    "terminal.integrated.showExitAlert": true
 }
