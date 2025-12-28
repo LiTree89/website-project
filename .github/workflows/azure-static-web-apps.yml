@@ -25,9 +25,7 @@ jobs:
           node-version: '20.x'
       - name: Install dependencies
         run: npm install
-      - name: Build app
         run: npm run build
-      - name: Deploy to Azure Static Web Apps
         uses: Azure/static-web-apps-deploy@v1
         with:
           azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
@@ -36,6 +34,19 @@ jobs:
           app_location: "/src" # Location of your app source code
           api_location: "/api" # Location of your Azure Functions code (optional)
           output_location: "/dist" # Parcel build output directory
+
+      - name: Build app
+        run: npm run build
+
+      - name: Deploy to Azure Static Web Apps
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          action: "upload"
+          app_location: "/src"
+          api_location: "/api"
+          output_location: "/dist"
 
   close_pull_request_job:
     if: github.event_name == 'pull_request' && github.event.action == 'closed'

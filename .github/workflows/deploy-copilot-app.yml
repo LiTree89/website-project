@@ -1,7 +1,6 @@
 # Professional GitHub Actions Workflow for Azure App Service (Copilot Engine)
 # Deploys services/copilot-engine/ to litlab-app-copilot using OIDC authentication
 
-
 name: Deploy Copilot Engine App Service
 
 env:
@@ -32,29 +31,25 @@ jobs:
         environment: production
         steps:
             - name: Checkout code
-                uses: actions/checkout@v4
-
+              uses: actions/checkout@v4
             - name: Setup Node.js
-                uses: actions/setup-node@v4
-                with:
-                    node-version: "20.x"
-
+              uses: actions/setup-node@v4
+              with:
+                  node-version: "20.x"
             - name: Build copilot-engine
-                working-directory: services/copilot-engine
-                run: |
-                    npm ci
-                    npm run build || true
-
+              working-directory: services/copilot-engine
+              run: |
+                  npm ci
+                  npm run build || true
             - name: Azure Login (OIDC)
-                uses: azure/login@v2
-                with:
-                    client-id: ${{ secrets.AZURE_CLIENT_ID }}
-                    tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-                    subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
-                    enable-AzPSSession: true
-
+              uses: azure/login@v2
+              with:
+                  client-id: ${{ secrets.AZURE_CLIENT_ID }}
+                  tenant-id: ${{ secrets.AZURE_TENANT_ID }}
+                  subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+                  enable-AzPSSession: true
             - name: Deploy to Azure App Service
-                uses: azure/webapps-deploy@v3
-                with:
-                    app-name: ${{ secrets.AZURE_COPILOT_APP_NAME }}
-                    package: services/copilot-engine
+              uses: azure/webapps-deploy@v3
+              with:
+                  app-name: ${{ secrets.AZURE_COPILOT_APP_NAME }}
+                  package: services/copilot-engine
