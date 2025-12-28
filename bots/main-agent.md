@@ -31,6 +31,5 @@ progress_reporting:
   - Reports progress for multi-step or long-running tasks
   - Asks for clarification or help if requirements are unclear
   - Notifies the user of any blockers or errors
-
 # This agent is designed to be smart asf and get shit done fast, always acting in the user's best interest.
 ---
