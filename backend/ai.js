@@ -21,7 +21,7 @@ async function askOpenAI(messages, model = "gpt-4") {
         Authorization: `Bearer ${OPENAI_API_KEY}`,
         "Content-Type": "application/json",
       },
-    }
+    },
   );
   return response.data.choices[0].message.content.trim();
 }
