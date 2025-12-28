@@ -15,8 +15,8 @@ app.post("/copilot/plan", async (req, res) => {
     actions: [
       { type: "open", target: "wallet" },
       { type: "start", target: "mission" },
-      { type: "join", target: "guild" }
-    ]
+      { type: "join", target: "guild" },
+    ],
   });
 });
 

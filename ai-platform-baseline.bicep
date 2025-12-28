@@ -1,63 +1,196 @@
-metadata name = 'AI Platform Baseline'
-metadata description = '''This module provides a secure and scalable environment for deploying AI applications on Azure.
 The module encompasses all essential components required for building, managing, and observing AI solutions, including a machine learning workspace, observability tools, and necessary data management services.
 By integrating with Microsoft Entra ID for secure identity management and utilizing private endpoints for services like Key Vault and Blob Storage, the module ensures secure communication and data access.'''
-
-@description('Required. Alphanumberic suffix to use for resource naming.')
-@minLength(3)
-param name string
-
-@description('Optional. Location for all Resources.')
-param location string = resourceGroup().location
-
-@description('Optional. Resource tags.')
-param tags object?
-
-@description('Optional. Enable/Disable usage telemetry for module.')
-// ============== //
-// Resources      //
-// ============== //
-
-// The following resources and modules are commented out because they access outputs from conditionally deployed modules, which is not allowed in Bicep.
-// If you need these resources, refactor your deployment so the modules are always deployed, or split your logic to avoid accessing outputs from possibly-null modules.
-//
-// resource avmTelemetry ...
-// module storageAccount_privateDnsZones ...
-// module workspaceHub_privateDnsZones ...
-// module defaultNetworkSecurityGroup ...
-// ...other affected resources...
-//
-// See Bicep documentation for details: https://learn.microsoft.com/azure/azure-resource-manager/bicep/errors/bicep-error-conditional-module-output
-switzerlandnorth: 'westeurope'
 switzerlandwest: 'westeurope'
 westeurope: 'northeurope'
 ukwest: 'uksouth'
-// Middle East
-qatarcentral: 'uaecentral'
-uaecentral: 'uaenorth'
-uaenorth: 'qatarcentral'
-// India
-centralindia: 'southindia'
 southindia: 'centralindia'
-// Asia Pacific
 eastasia: 'japaneast'
 japaneast: 'koreacentral'
 japanwest: 'japaneast'
 koreacentral: 'eastasia'
 koreasouth: 'koreacentral'
 southeastasia: 'eastasia'
-// Oceania
 australiacentral: 'australiaeast'
 australiacentral2: 'australiacentral'
 australiaeast: 'australiasoutheast'
 australiasoutheast: 'australiaeast'
-// Africa
 southafricanorth: 'southafricawest'
 southafricawest: 'southafricanorth'
+// ai-platform-baseline.bicep
+// Professional Azure-native hybrid deployment for website-project
+// Resources: SWA, Functions, App Services, SignalR, Cosmos DB, Storage, Key Vault, App Insights
+// Uses managed identities and Key Vault references for secure configuration
+
+param location string = resourceGroup().location
+param swaProdName string = 'litlab-swa-prod'
+param swaPreviewName string = 'litlab-swa-preview'
+param funcApiName string = 'litlab-func-api'
+param backendAppName string = 'litlab-app-backend'
+param copilotAppName string = 'litlab-app-copilot'
+param signalrName string = 'litlab-signalr'
+param cosmosName string = 'litlab-cosmos'
+param storageName string = 'litlabstorage'
+param keyVaultName string = 'litlab-kv'
+param appInsightsName string = 'litlab-insights'
+
+// Static Web Apps (prod and preview)
+resource swaProd 'Microsoft.Web/staticSites@2023-01-01' = {
+  name: swaProdName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
+}
+resource swaPreview 'Microsoft.Web/staticSites@2023-01-01' = {
+  name: swaPreviewName
+  location: location
+  sku: {
+    name: 'Standard'
+  }
 }
 
-// ============== //
-// Resources      //
+// Azure Function App (Node 20)
+resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
+  name: funcApiName
+  location: location
+  kind: 'functionapp,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    siteConfig: {
+      linuxFxVersion: 'Node|20'
+    }
+    httpsOnly: true
+  }
+}
+
+// App Service for backend
+resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
+  name: backendAppName
+  location: location
+  kind: 'app,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    siteConfig: {
+      linuxFxVersion: 'Node|20'
+    }
+    httpsOnly: true
+  }
+}
+
+// App Service for copilot-engine
+resource copilotApp 'Microsoft.Web/sites@2023-01-01' = {
+  name: copilotAppName
+  location: location
+  kind: 'app,linux'
+  identity: {
+    type: 'SystemAssigned'
+  }
+  properties: {
+    siteConfig: {
+      linuxFxVersion: 'Node|20'
+    }
+    httpsOnly: true
+  }
+}
+
+// Azure SignalR Service
+resource signalr 'Microsoft.SignalRService/SignalR@2023-08-01-preview' = {
+  name: signalrName
+  location: location
+  sku: {
+    name: 'Standard_S1'
+    capacity: 1
+  }
+  properties: {
+    features: [
+      {
+        flag: 'ServiceMode'
+        value: 'Default'
+      }
+    ]
+  }
+}
+
+// Cosmos DB (SQL API)
+resource cosmos 'Microsoft.DocumentDB/databaseAccounts@2023-04-15' = {
+  name: cosmosName
+  location: location
+  kind: 'GlobalDocumentDB'
+  properties: {
+    databaseAccountOfferType: 'Standard'
+    locations: [
+      {
+        locationName: location
+        failoverPriority: 0
+        isZoneRedundant: false
+      }
+    ]
+    consistencyPolicy: {
+      defaultConsistencyLevel: 'Session'
+    }
+    capabilities: [
+      {
+        name: 'EnableServerless'
+      }
+    ]
+  }
+}
+
+// Storage Account
+resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
+  name: storageName
+  location: location
+  sku: {
+    name: 'Standard_LRS'
+  }
+  kind: 'StorageV2'
+  properties: {
+    accessTier: 'Hot'
+  }
+}
+
+// Key Vault
+resource keyVault 'Microsoft.KeyVault/vaults@2023-02-01' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    tenantId: subscription().tenantId
+    sku: {
+      family: 'A'
+      name: 'standard'
+    }
+    accessPolicies: [] // Managed identities will be granted access after deployment
+    enabledForDeployment: true
+    enabledForTemplateDeployment: true
+    enabledForDiskEncryption: true
+  }
+}
+
+// Application Insights
+resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
+  name: appInsightsName
+  location: location
+  kind: 'web'
+  properties: {
+    Application_Type: 'web'
+  }
+}
+
+// Outputs for reference
+output swaProdUrl string = swaProd.properties.defaultHostname
+output swaPreviewUrl string = swaPreview.properties.defaultHostname
+output funcApiUrl string = funcApi.properties.defaultHostName
+output backendAppUrl string = backendApp.properties.defaultHostName
+output copilotAppUrl string = copilotApp.properties.defaultHostName
+output signalrUrl string = signalr.properties.hostName
+output cosmosEndpoint string = cosmos.properties.documentEndpoint
+output storageUrl string = storage.properties.primaryEndpoints.web
+output keyVaultUri string = keyVault.properties.vaultUri
+output appInsightsKey string = appInsights.properties.InstrumentationKey
 // ============== //
 
 #disable-next-line no-deployments-resources
