@@ -4,7 +4,7 @@
     {
       "label": "Sync and Setup Project",
       "type": "shell",
-      "command": "git pull && npm install && cd frontend && npm install && cd ../frontend-new && npm install && cd ../services/copilot-engine && npm install && cd ../../..",
+      "command": "git pull; npm install; cd frontend; npm install; cd ../frontend-new; npm install; cd ../services/copilot-engine; npm install; cd ../../..",
       "problemMatcher": [],
       "group": "build",
       "presentation": {

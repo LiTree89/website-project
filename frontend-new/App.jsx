@@ -6,6 +6,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import Sidebar from "./src/components/Sidebar.jsx";
+// ...existing code...
 import FeedPage from "./src/pages/FeedPage.jsx";
 import ProfilePage from "./src/pages/ProfilePage.jsx";
 import ChatPage from "./src/pages/ChatPage.jsx";
@@ -13,7 +14,7 @@ import AgentPage from "./src/pages/AgentPage.jsx";
 import MediaPage from "./src/pages/MediaPage.jsx";
 import PaymentDemo from "./src/components/PaymentDemo.jsx";
 import NeonDivider from "./src/components/NeonDivider.jsx";
-import FloatingDock from "./src/components/FloatingDock.jsx";
+// ...existing code...
 
 // Dark mode toggle for dock
 function DarkModeToggle({ className = "" }) {
@@ -73,6 +74,8 @@ export default function App() {
             <DarkModeToggle className="ml-2 mb-8" />
           </div>
         </div>
+        {/* Global Floating Dock */}
+        <FloatingDock userId={'mockUser'} />
       </div>
     </Router>
   );
