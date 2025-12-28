@@ -1,8 +1,6 @@
 {
-    // VS Code terminal troubleshooting defaults
-    // Set default terminal to Command Prompt for maximum compatibility
-    "terminal.integrated.defaultProfile.windows": "Command Prompt",
-    // Define available terminal profiles
+    // --- TERMINAL ---
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
     "terminal.integrated.profiles.windows": {
         "Command Prompt": {
             "path": [
@@ -12,6 +10,7 @@
         },
         "PowerShell": {
             "path": [
+                "${env:ProgramFiles}\\PowerShell\\7\\pwsh.exe",
                 "${env:windir}\\System32\\WindowsPowerShell\\v1.0\\powershell.exe"
             ],
             "args": []
@@ -20,14 +19,52 @@
             "source": "Git Bash"
         }
     },
-    // Ensure environment variables are inherited
     "terminal.integrated.inheritEnv": true,
-    // Clear any custom environment overrides
     "terminal.integrated.env.windows": {},
-    // Fallback shell in case default fails
     "terminal.integrated.shellIntegration.enabled": true,
-    // Enable persistent sessions for troubleshooting
     "terminal.integrated.enablePersistentSessions": true,
-    // Show full error output for troubleshooting
-    "terminal.integrated.showExitAlert": true
+    "terminal.integrated.showExitAlert": true,
+    "terminal.integrated.windowsEnableConpty": true,
+    "terminal.integrated.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+    "terminal.integrated.fontSize": 14,
+    "terminal.integrated.copyOnSelection": true,
+
+    // --- EDITOR ---
+    "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
+    "editor.fontSize": 16,
+    "editor.tabSize": 2,
+    "editor.insertSpaces": true,
+    "editor.wordWrap": "on",
+    "editor.minimap.enabled": true,
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "all",
+    "editor.smoothScrolling": true,
+    "editor.cursorSmoothCaretAnimation": true,
+    "editor.guides.bracketPairs": true,
+
+    // --- FILES ---
+    "files.autoSave": "onWindowChange",
+    "files.trimTrailingWhitespace": true,
+    "files.insertFinalNewline": true,
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/node_modules": true,
+        "**/dist": true
+    },
+
+    // --- SEARCH ---
+    "search.useIgnoreFiles": true,
+    "search.useGlobalIgnoreFiles": true,
+
+    // --- EXPLORER ---
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+
+    // --- UI ---
+    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.iconTheme": "vs-seti",
+    "workbench.startupEditor": "none",
+    "workbench.editor.enablePreview": false,
+    "breadcrumbs.enabled": true
 }
