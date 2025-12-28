@@ -17,7 +17,6 @@ param enableTelemetry bool = true
 @minLength(3)
 param name string
 
-
 param managedIdentityName string?
 
 @description('Optional. Configuration for the Log Analytics workspace.')
@@ -477,7 +476,6 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
 output resourceGroupName string = resourceGroup().name
 output location string = location
 output keyVaultUri string = keyVault == null ? '' : keyVault.outputs.uri
-
 
 // ================ //
 // Definitions      //
