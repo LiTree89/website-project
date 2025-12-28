@@ -658,31 +658,39 @@ output workspaceProjectResourceId string = workspaceProject.outputs.resourceId
 @description('The name of the workspace project.')
 output workspaceProjectName string = workspaceProject.outputs.name
 
-@description('The resource ID of the virtual network.')
-output virtualNetworkResourceId string = createVirtualNetwork ? virtualNetwork.outputs.resourceId : ''
+// @description('The resource ID of the virtual network.')
+// output virtualNetworkResourceId string = createVirtualNetwork ? virtualNetwork.outputs.resourceId : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
-@description('The name of the virtual network.')
-output virtualNetworkName string = createVirtualNetwork ? virtualNetwork.outputs.name : ''
+// @description('The name of the virtual network.')
+// output virtualNetworkName string = createVirtualNetwork ? virtualNetwork.outputs.name : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
-@description('The resource ID of the subnet in the virtual network.')
-output virtualNetworkSubnetResourceId string = createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds)
-  ? virtualNetwork.outputs.subnetResourceIds[0]
-  : ''
-@description('The name of the subnet in the virtual network.')
-output virtualNetworkSubnetName string = createVirtualNetwork && !empty(virtualNetwork.outputs.subnetNames)
-  ? virtualNetwork.outputs.subnetNames[0]
-  : ''
-@description('The resource ID of the Azure Bastion host.')
-output bastionResourceId string = createBastion ? bastion.outputs.resourceId : ''
+// @description('The resource ID of the subnet in the virtual network.')
+// output virtualNetworkSubnetResourceId string = createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds)
+//   ? virtualNetwork.outputs.subnetResourceIds[0]
+//   : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
+// @description('The name of the subnet in the virtual network.')
+// output virtualNetworkSubnetName string = createVirtualNetwork && !empty(virtualNetwork.outputs.subnetNames)
+//   ? virtualNetwork.outputs.subnetNames[0]
+//   : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
+// @description('The resource ID of the Azure Bastion host.')
+// output bastionResourceId string = createBastion ? bastion.outputs.resourceId : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
-@description('The name of the Azure Bastion host.')
-output bastionName string = createBastion ? bastion.outputs.name : ''
+// @description('The name of the Azure Bastion host.')
+// output bastionName string = createBastion ? bastion.outputs.name : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
-@description('The resource ID of the virtual machine.')
-output virtualMachineResourceId string = createVirtualMachine ? virtualMachine.outputs.resourceId : ''
+// @description('The resource ID of the virtual machine.')
+// output virtualMachineResourceId string = createVirtualMachine ? virtualMachine.outputs.resourceId : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
-@description('The name of the virtual machine.')
-output virtualMachineName string = createVirtualMachine ? virtualMachine.outputs.name : ''
+// @description('The name of the virtual machine.')
+// output virtualMachineName string = createVirtualMachine ? virtualMachine.outputs.name : ''
+// Output omitted: Cannot access outputs of a conditionally deployed module in Bicep.
 
 // ================ //
 // Definitions      //
