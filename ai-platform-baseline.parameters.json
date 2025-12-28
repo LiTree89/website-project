@@ -1,7 +1,7 @@
 {
   "location": { "value": "eastus2" },
   "workspaceName": { "value": "litreelabstudio-mcp-ws" },
-  "adminUserObjectId": { "value": "<YOUR-USER-OBJECT-ID>" },
+  "adminUserObjectId": { "value": "8e879165-b4a2-48c7-9728-93bacc50d4ed" },
   "enablePrivateEndpoints": { "value": false },
   "tags": { "value": { "env": "dev", "project": "trusted-mcp" } }
 }
