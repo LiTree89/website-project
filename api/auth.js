@@ -20,12 +20,25 @@ module.exports = async function (context, req) {
       // Registration
       const existing = await findUserByEmail(email);
       if (existing) {
-        context.res = { status: 409, body: { error: "Email already registered" } };
+        context.res = {
+          status: 409,
+          body: { error: "Email already registered" },
+        };
         return;
       }
       const user = await createUser({ email, password, name });
-      const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: "7d" });
-      context.res = { status: 201, body: { token, user: { id: user.id, email: user.email, name: user.name } } };
+      const token = jwt.sign(
+        { id: user.id, email: user.email, name: user.name },
+        JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      context.res = {
+        status: 201,
+        body: {
+          token,
+          user: { id: user.id, email: user.email, name: user.name },
+        },
+      };
       return;
     } else if (action === "login") {
       // Login
@@ -39,8 +52,18 @@ module.exports = async function (context, req) {
         context.res = { status: 401, body: { error: "Invalid credentials" } };
         return;
       }
-      const token = jwt.sign({ id: user.id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: "7d" });
-      context.res = { status: 200, body: { token, user: { id: user.id, email: user.email, name: user.name } } };
+      const token = jwt.sign(
+        { id: user.id, email: user.email, name: user.name },
+        JWT_SECRET,
+        { expiresIn: "7d" }
+      );
+      context.res = {
+        status: 200,
+        body: {
+          token,
+          user: { id: user.id, email: user.email, name: user.name },
+        },
+      };
       return;
     } else {
       context.res = { status: 400, body: { error: "Invalid action" } };

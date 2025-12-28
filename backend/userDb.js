@@ -10,7 +10,9 @@ const CONTAINER = "users";
 async function getUserContainer() {
   const client = await getClient();
   const db = client.database(DB_NAME);
-  const { container } = await db.containers.createIfNotExists({ id: CONTAINER });
+  const { container } = await db.containers.createIfNotExists({
+    id: CONTAINER,
+  });
   return container;
 }
 
