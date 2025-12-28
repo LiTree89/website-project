@@ -6,9 +6,9 @@ const database = client.database("YourDatabase");
 const container = database.container("Users");
 
 const PACK_PRICES = {
-  small: 499,   // $4.99 in cents
-  medium: 999,  // $9.99
-  large: 1899   // $18.99
+  small: 499, // $4.99 in cents
+  medium: 999, // $9.99
+  large: 1899, // $18.99
 };
 
 async function getUser(userId) {
