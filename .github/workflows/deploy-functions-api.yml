@@ -42,8 +42,8 @@ jobs:
                   subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
                   enable-AzPSSession: true
 
-            - name: Deploy to Azure Functions
-              uses: Azure/functions-action@v1
-              with:
-                  app-name: "litlab-func-api"
-                  package: "api"
+                        - name: Deploy to Azure Functions
+                            uses: Azure/functions-action@v1
+                            with:
+                                    app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME }}
+                                    package: "api"
