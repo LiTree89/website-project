@@ -183,7 +183,7 @@ module workspaceHub_privateDnsZones 'br/public:avm/res/network/private-dns-zone:
       roleAssignments: managedIdentityName != null
         ? [
             {
-              principalId: userAssignedIdentity.properties.principalId
+              principalId: userAssignedIdentity?.properties.principalId ?? ''
               roleDefinitionIdOrName: 'Contributor'
               principalType: 'ServicePrincipal'
             }
@@ -262,7 +262,7 @@ module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastio
     location: location
     skuName: bastionConfiguration.?sku ?? 'Standard'
     enableTelemetry: enableTelemetry
-    virtualNetworkResourceId: virtualNetwork.outputs.resourceId
+    virtualNetworkResourceId: virtualNetwork?.outputs.resourceId ?? ''
     disableCopyPaste: bastionConfiguration.?disableCopyPaste
     enableFileCopy: bastionConfiguration.?enableFileCopy
     enableIpConnect: bastionConfiguration.?enableIpConnect
@@ -354,7 +354,7 @@ resource resourceGroup_roleAssignment 'Microsoft.Authorization/roleAssignments@2
       'Microsoft.Authorization/roleDefinitions',
       'acdd72a7-3385-48ef-bd42-f606fba81ae7' // Reader
     )
-    principalId: userAssignedIdentity.properties.principalId
+          principalId: userAssignedIdentity?.properties.principalId ?? ''
     principalType: 'ServicePrincipal'
   }
 }
@@ -378,12 +378,12 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: 'Key Vault Administrator'
             principalType: 'ServicePrincipal'
           }
@@ -391,7 +391,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
       : null
     diagnosticSettings: [
       {
-        workspaceResourceId: logAnalyticsWorkspace.id
+        workspaceResourceId: logAnalyticsWorkspace?.id ?? ''
         logCategoriesAndGroups: [
           {
             category: 'AuditEvent'
@@ -431,17 +431,17 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: 'Storage Blob Data Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity.properties.principalId
+            principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: '69566ab7-960f-475b-8e7c-b3118f30c6bd' // Storage File Data Privileged Contributor
             principalType: 'ServicePrincipal'
           }
@@ -489,7 +489,7 @@ module applicationInsights 'br/public:avm/res/insights/component:0.3.1' = {
     location: location
     kind: 'web'
     enableTelemetry: enableTelemetry
-    workspaceResourceId: logAnalyticsWorkspace.id
+    workspaceResourceId: logAnalyticsWorkspace?.id ?? ''
     roleAssignments: managedIdentityName != null
       ? [
           {
@@ -511,21 +511,21 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
     location: location
     enableTelemetry: enableTelemetry
     kind: 'Hub'
-    associatedApplicationInsightsResourceId: applicationInsights.outputs.resourceId
-    associatedKeyVaultResourceId: keyVault.outputs.resourceId
-    associatedStorageAccountResourceId: storageAccount.outputs.resourceId
-    associatedContainerRegistryResourceId: containerRegistry.outputs.resourceId
+    associatedApplicationInsightsResourceId: applicationInsights?.outputs.resourceId ?? ''
+    associatedKeyVaultResourceId: keyVault?.outputs.resourceId ?? ''
+    associatedStorageAccountResourceId: storageAccount?.outputs.resourceId ?? ''
+    associatedContainerRegistryResourceId: containerRegistry?.outputs.resourceId ?? ''
     workspaceHubConfig: {
       defaultWorkspaceResourceGroup: resourceGroup().id
     }
     managedIdentities: managedIdentityName != null
       ? {
           userAssignedResourceIds: [
-            userAssignedIdentity.id
+            userAssignedIdentity?.id ?? ''
           ]
         }
       : null
-    primaryUserAssignedIdentity: managedIdentityName != null ? userAssignedIdentity.id : null
+    primaryUserAssignedIdentity: managedIdentityName != null ? (userAssignedIdentity?.id ?? null) : null
     computes: workspaceConfiguration.?computes
     managedNetworkSettings: {
       isolationMode: workspaceConfiguration.?networkIsolationMode ?? 'AllowInternetOutbound'
@@ -572,7 +572,7 @@ module workspaceProject 'br/public:avm/res/machine-learning-services/workspace:0
     location: location
     enableTelemetry: enableTelemetry
     kind: 'Project'
-    hubResourceId: workspaceHub.outputs.resourceId
+    hubResourceId: workspaceHub?.outputs.resourceId ?? ''
     roleAssignments: managedIdentityName != null
       ? [
           {
@@ -597,46 +597,46 @@ output resourceGroupName string = resourceGroup().name
 output location string = location
 
 @description('The resource ID of the application insights component.')
-output applicationInsightsResourceId string = applicationInsights.outputs.resourceId
+output applicationInsightsResourceId string = applicationInsights?.outputs.resourceId ?? ''
 
 @description('The name of the application insights component.')
-output applicationInsightsName string = applicationInsights.outputs.name
+output applicationInsightsName string = applicationInsights?.outputs.name ?? ''
 
 @description('The application ID of the application insights component.')
-output applicationInsightsApplicationId string = applicationInsights.outputs.applicationId
+output applicationInsightsApplicationId string = applicationInsights?.outputs.applicationId ?? ''
 
 @description('The instrumentation key of the application insights component.')
-output applicationInsightsInstrumentationKey string = applicationInsights.outputs.instrumentationKey
+output applicationInsightsInstrumentationKey string = applicationInsights?.outputs.instrumentationKey ?? ''
 
 @description('The connection string of the application insights component.')
-output applicationInsightsConnectionString string = applicationInsights.outputs.connectionString
+output applicationInsightsConnectionString string = applicationInsights?.outputs.connectionString ?? ''
 
 @description('The resource ID of the log analytics workspace.')
-output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace.id
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace?.id ?? ''
 
 @description('The name of the log analytics workspace.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace.name
+output logAnalyticsWorkspaceName string = logAnalyticsWorkspace?.name ?? ''
 
 @description('The resource ID of the key vault.')
-output keyVaultResourceId string = keyVault.outputs.resourceId
+output keyVaultResourceId string = keyVault?.outputs.resourceId ?? ''
 
 @description('The name of the key vault.')
-output keyVaultName string = keyVault.outputs.name
+output keyVaultName string = keyVault?.outputs.name ?? ''
 
 @description('The URI of the key vault.')
-output keyVaultUri string = keyVault.outputs.uri
+output keyVaultUri string = keyVault?.outputs.uri ?? ''
 
 @description('The resource ID of the storage account.')
-output storageAccountResourceId string = storageAccount.outputs.resourceId
+output storageAccountResourceId string = storageAccount?.outputs.resourceId ?? ''
 
 @description('The name of the storage account.')
-output storageAccountName string = storageAccount.outputs.name
+output storageAccountName string = storageAccount?.outputs.name ?? ''
 
 @description('The resource ID of the container registry.')
-output containerRegistryResourceId string = containerRegistry.outputs.resourceId
+output containerRegistryResourceId string = containerRegistry?.outputs.resourceId ?? ''
 
 @description('The name of the container registry.')
-output containerRegistryName string = containerRegistry.outputs.name
+output containerRegistryName string = containerRegistry?.outputs.name ?? ''
 
 @description('The resource ID of the workspace hub.')
 output workspaceHubResourceId string = workspaceHub.outputs.resourceId
