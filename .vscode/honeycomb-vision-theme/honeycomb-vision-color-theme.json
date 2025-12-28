@@ -18,7 +18,7 @@
         "tab.activeBackground": "#1a1026",
         "tab.inactiveBackground": "#2d1743",
         "tab.activeForeground": "#ffe066",
-        "tab.inactiveForeground": "#b39ddb",
+        "tab.inactiveForeground": "#ffd700",
         "titleBar.activeBackground": "#3d2067",
         "titleBar.activeForeground": "#ffd700",
         "titleBar.inactiveBackground": "#2d1743",
@@ -31,7 +31,7 @@
         "list.activeSelectionBackground": "#ffd70033",
         "list.inactiveSelectionBackground": "#3d206733",
         "list.hoverBackground": "#ffe06633",
-        "editorLineNumber.foreground": "#b39ddb",
+        "editorLineNumber.foreground": "#ffd700",
         "editorLineNumber.activeForeground": "#ffd700"
     },
     "tokenColors": [
@@ -41,7 +41,7 @@
                 "punctuation.definition.comment"
             ],
             "settings": {
-                "foreground": "#b39ddb"
+                "foreground": "#ffd700"
             }
         },
         {
