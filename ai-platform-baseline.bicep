@@ -1,21 +1,3 @@
-The module encompasses all essential components required for building, managing, and observing AI solutions, including a machine learning workspace, observability tools, and necessary data management services.
-By integrating with Microsoft Entra ID for secure identity management and utilizing private endpoints for services like Key Vault and Blob Storage, the module ensures secure communication and data access.'''
-switzerlandwest: 'westeurope'
-westeurope: 'northeurope'
-ukwest: 'uksouth'
-southindia: 'centralindia'
-eastasia: 'japaneast'
-japaneast: 'koreacentral'
-japanwest: 'japaneast'
-koreacentral: 'eastasia'
-koreasouth: 'koreacentral'
-southeastasia: 'eastasia'
-australiacentral: 'australiaeast'
-australiacentral2: 'australiacentral'
-australiaeast: 'australiasoutheast'
-australiasoutheast: 'australiaeast'
-southafricanorth: 'southafricawest'
-southafricawest: 'southafricanorth'
 // ai-platform-baseline.bicep
 // Professional Azure-native hybrid deployment for website-project
 // Resources: SWA, Functions, App Services, SignalR, Cosmos DB, Storage, Key Vault, App Insights
