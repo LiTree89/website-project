@@ -4,7 +4,7 @@
     "terminal.integrated.splitCwd": "workspaceRoot",
     "workbench.colorCustomizations": {},
     "workbench.colorTheme": "Honeycomb",
-    "workbench.colorCustomizations.honeycomb": "./.vscode/honeycomb-color-theme.json"
+    "workbench.colorCustomizations.honeycomb": "./.vscode/honeycomb-color-theme.json",
 }
 // --- TERMINAL ---
 "terminal.integrated.defaultProfile.windows": "PowerShell",
@@ -64,7 +64,7 @@
 "explorer.confirmDelete": false,
 "explorer.confirmDragAndDrop": false,
 // --- UI ---
-"workbench.colorTheme": "Best Themes - Shades of Purple (Super Dark)",
+// "workbench.colorTheme": "Best Themes - Shades of Purple (Super Dark)",
 "workbench.iconTheme": "vs-seti",
 "workbench.startupEditor": "none",
 "workbench.editor.enablePreview": false,
