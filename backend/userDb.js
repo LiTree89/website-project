@@ -26,6 +26,7 @@ async function findUserByEmail(email) {
   return resources[0] || null;
 }
 
+// Subscription tiers: 'free', 'premium', 'pro', 'enterprise'
 async function createUser({ email, password, name }) {
   const container = await getUserContainer();
   const hash = await bcrypt.hash(password, 10);
@@ -35,9 +36,38 @@ async function createUser({ email, password, name }) {
     password: hash,
     name,
     createdAt: new Date().toISOString(),
+    subscription: {
+      tier: "free", // default tier
+      status: "inactive", // 'active', 'inactive', 'canceled', 'trial'
+      renewalDate: null,
+      lastPayment: null,
+      paymentProvider: null, // e.g., 'stripe', 'coinbase', 'googlepay'
+      history: [], // [{date, amount, provider, status}]
+    },
   };
   await container.items.create(user);
   return user;
 }
 
-module.exports = { findUserByEmail, createUser };
+async function updateUserSubscription(userId, subscription) {
+  const container = await getUserContainer();
+  // Patch only the subscription field
+  const { resource } = await container.item(userId, userId).read();
+  if (!resource) throw new Error("User not found");
+  resource.subscription = { ...resource.subscription, ...subscription };
+  await container.items.upsert(resource);
+  return resource;
+}
+
+async function getUserById(userId) {
+  const container = await getUserContainer();
+  const { resource } = await container.item(userId, userId).read();
+  return resource;
+}
+
+module.exports = {
+  findUserByEmail,
+  createUser,
+  updateUserSubscription,
+  getUserById,
+};
