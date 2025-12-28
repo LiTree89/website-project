@@ -1,6 +1,7 @@
 # LiTbiT-2.0 Roadmap
 
 ## Phases
+
 1. **Planning & Research**
    - Market analysis, competitor review, user surveys
 2. **MVP Build**
@@ -12,6 +13,7 @@
    - NFT drops, marketing, community events
 
 ## Milestones
+
 - Smart contract deployment (Polygon/Base)
 - Bot integration (AI, trading, NFT)
 - Cosmos DB backend setup
