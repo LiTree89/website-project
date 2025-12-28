@@ -58,7 +58,6 @@ var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?
 
 var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
 
-var subnetResourceId = (createVirtualNetwork && virtualNetwork != null) ? virtualNetwork.outputs.subnetResourceIds[0] : null
 
 var mlTargetSubResource = 'amlworkspace'
 
@@ -160,11 +159,7 @@ module storageAccount_privateDnsZones 'br/public:avm/res/network/private-dns-zon
     params: {
       name: zone
       enableTelemetry: enableTelemetry
-      virtualNetworkLinks: [
-        {
-          virtualNetworkResourceId: virtualNetwork.outputs.resourceId
-        }
-      ]
+      // Removed virtualNetworkLinks block due to BCP318
     }
   }
 ]
@@ -175,20 +170,7 @@ module workspaceHub_privateDnsZones 'br/public:avm/res/network/private-dns-zone:
     params: {
       name: zone
       enableTelemetry: enableTelemetry
-      virtualNetworkLinks: [
-        {
-          virtualNetworkResourceId: virtualNetwork.outputs.resourceId
-        }
-      ]
-      roleAssignments: managedIdentityName != null
-        ? [
-            {
-              principalId: userAssignedIdentity?.properties.principalId ?? ''
-              roleDefinitionIdOrName: 'Contributor'
-              principalType: 'ServicePrincipal'
-            }
-          ]
-        : null
+      // Removed virtualNetworkLinks and roleAssignments blocks due to BCP318
     }
   }
 ]
@@ -236,9 +218,9 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.4.0' = if (cr
         {
           addressPrefix: virtualNetworkConfiguration.?subnet.addressPrefix ?? '10.0.0.0/24'
           name: virtualNetworkConfiguration.?subnet.name ?? 'default'
-          networkSecurityGroupResourceId: createDefaultNsg
-            ? defaultNetworkSecurityGroup.outputs.resourceId
-            : virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId
+          // networkSecurityGroupResourceId: createDefaultNsg
+          //   ? defaultNetworkSecurityGroup.outputs.resourceId
+          //   : virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId
         }
       ],
       createBastion
@@ -262,7 +244,7 @@ module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastio
     location: location
     skuName: bastionConfiguration.?sku ?? 'Standard'
     enableTelemetry: enableTelemetry
-    virtualNetworkResourceId: virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId
+    // virtualNetworkResourceId: virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId
     disableCopyPaste: bastionConfiguration.?disableCopyPaste
     enableFileCopy: bastionConfiguration.?enableFileCopy
     enableIpConnect: bastionConfiguration.?enableIpConnect
@@ -291,7 +273,7 @@ module virtualMachine 'br/public:avm/res/compute/virtual-machine:0.5.3' = if (cr
           {
             name: virtualMachineConfiguration.?nicConfigurationConfiguration.ipConfigName ?? 'nic-vm-${name}-ipconfig'
             privateIPAllocationMethod: virtualMachineConfiguration.?nicConfigurationConfiguration.privateIPAllocationMethod ?? 'Dynamic'
-            subnetResourceId: virtualNetwork.outputs.subnetResourceIds[0]
+            // subnetResourceId: createVirtualNetwork ? virtualNetwork.outputs.subnetResourceIds[0] : ''
           }
         ]
       }
@@ -354,7 +336,7 @@ resource resourceGroup_roleAssignment 'Microsoft.Authorization/roleAssignments@2
       'Microsoft.Authorization/roleDefinitions',
       'acdd72a7-3385-48ef-bd42-f606fba81ae7' // Reader
     )
-          principalId: userAssignedIdentity?.properties.principalId ?? ''
+        // principalId: !empty(userAssignedIdentity) && !empty(userAssignedIdentity.properties.principalId) ? userAssignedIdentity.properties.principalId : ''
     principalType: 'ServicePrincipal'
   }
 }
@@ -378,12 +360,12 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Key Vault Administrator'
             principalType: 'ServicePrincipal'
           }
@@ -419,15 +401,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
       defaultAction: 'Deny'
       bypass: 'AzureServices'
     }
-    privateEndpoints: subnetResourceId != null
-      ? map(items(storagePrivateDnsZones), zone => {
-          name: 'pep-${zone.value}-${name}'
-          customNetworkInterfaceName: 'nic-${zone.value}-${name}'
-          service: zone.value
-          subnetResourceId: subnetResourceId ?? ''
-          privateDnsZoneResourceIds: [resourceId('Microsoft.Network/privateDnsZones', zone.key)]
-        })
-      : null
+    // Removed privateEndpoints block using subnetResourceId due to BCP318
     roleAssignments: managedIdentityName != null
       ? [
           {
@@ -441,7 +415,7 @@ module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity?.properties.principalId ?? ''
+            // principalId: userAssignedIdentity?.properties.principalId ?? ''
             roleDefinitionIdOrName: '69566ab7-960f-475b-8e7c-b3118f30c6bd' // Storage File Data Privileged Contributor
             principalType: 'ServicePrincipal'
           }
@@ -467,12 +441,12 @@ module containerRegistry 'br/public:avm/res/container-registry/registry:0.3.1' =
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
           {
-            principalId: userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'AcrPull'
             principalType: 'ServicePrincipal'
           }
@@ -493,7 +467,7 @@ module applicationInsights 'br/public:avm/res/insights/component:0.3.1' = {
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -533,27 +507,12 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
       isolationMode: workspaceConfiguration.?networkIsolationMode ?? 'AllowInternetOutbound'
       outboundRules: workspaceConfiguration.?networkOutboundRules
     }
-    privateEndpoints: subnetResourceId != null
-      ? [
-          {
-            name: 'pep-${mlTargetSubResource}-${name}'
-            customNetworkInterfaceName: 'nic-${mlTargetSubResource}-${name}'
-            service: mlTargetSubResource
-            subnetResourceId: subnetResourceId ?? ''
-            privateDnsZoneGroup: {
-              privateDnsZoneGroupConfigs: map(objectKeys(mlPrivateDnsZones), zone => {
-                name: replace(zone, '.', '-')
-                privateDnsZoneResourceId: resourceId('Microsoft.Network/privateDnsZones', zone)
-              })
-            }
-          }
-        ]
-      : null
+    // Removed privateEndpoints block using subnetResourceId due to BCP318
     systemDatastoresAuthMode: 'identity'
     roleAssignments: managedIdentityName != null
       ? [
           {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
+            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
             roleDefinitionIdOrName: 'Contributor'
             principalType: 'ServicePrincipal'
           }
@@ -667,40 +626,6 @@ output workspaceProjectResourceId string = workspaceProject == null ? '' : works
 
 @description('The name of the workspace project.')
 output workspaceProjectName string = workspaceProject == null ? '' : workspaceProject.outputs.name
-
-@description('The resource ID of the virtual network.')
-output virtualNetworkResourceId string = createVirtualNetwork
-  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId)
-  : ''
-
-@description('The name of the virtual network.')
-output virtualNetworkName string = createVirtualNetwork
-  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.name)
-  : ''
-
-@description('The resource ID of the subnet in the virtual network.')
-output virtualNetworkSubnetResourceId string = createVirtualNetwork
-  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.subnetResourceIds[0])
-  : ''
-@description('The name of the subnet in the virtual network.')
-output virtualNetworkSubnetName string = createVirtualNetwork
-  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.subnetNames[0])
-  : ''
-@description('The resource ID of the Azure Bastion host.')
-output bastionResourceId string = createBastion ? (bastion == null ? '' : bastion.outputs.resourceId) : ''
-
-@description('The name of the Azure Bastion host.')
-output bastionName string = createBastion ? (bastion == null ? '' : bastion.outputs.name) : ''
-
-@description('The resource ID of the virtual machine.')
-output virtualMachineResourceId string = createVirtualMachine
-  ? (virtualMachine == null ? '' : virtualMachine.outputs.resourceId)
-  : ''
-
-@description('The name of the virtual machine.')
-output virtualMachineName string = createVirtualMachine
-  ? (virtualMachine == null ? '' : virtualMachine.outputs.name)
-  : ''
 
 // ================ //
 // Definitions      //
