@@ -58,7 +58,6 @@ var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?
 
 var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
 
-
 var mlTargetSubResource = 'amlworkspace'
 
 var mlPrivateDnsZones = {
@@ -336,7 +335,7 @@ resource resourceGroup_roleAssignment 'Microsoft.Authorization/roleAssignments@2
       'Microsoft.Authorization/roleDefinitions',
       'acdd72a7-3385-48ef-bd42-f606fba81ae7' // Reader
     )
-        // principalId: !empty(userAssignedIdentity) && !empty(userAssignedIdentity.properties.principalId) ? userAssignedIdentity.properties.principalId : ''
+    // principalId: !empty(userAssignedIdentity) && !empty(userAssignedIdentity.properties.principalId) ? userAssignedIdentity.properties.principalId : ''
     principalType: 'ServicePrincipal'
   }
 }
