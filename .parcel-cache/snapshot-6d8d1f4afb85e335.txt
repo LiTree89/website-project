@@ -1,4 +1,4 @@
-25883
+25884
 30C:\Dev\website-project\.vercel134113709413737956 1
 67C:\Dev\website-project\node_modules\@parcel\source-map\package.json134114280322280574 0
 79C:\Dev\website-project\node_modules\caniuse-lite\data\features\readonly-attr.js134113704446644643 0
@@ -227,7 +227,7 @@
 77C:\Dev\website-project\node_modules\caniuse-lite\data\features\wasm-bigint.js134113704450598453 0
 94C:\Dev\website-project\node_modules\@azure\msal-node\lib\types\retry\IHttpRetryPolicy.d.ts.map134114250759631216 0
 53C:\Dev\website-project\node_modules\lines-and-columns134113807559464418 1
-31C:\Dev\website-project\frontend134114276686248450 1
+31C:\Dev\website-project\frontend134114281529651681 1
 88C:\Dev\website-project\frontend-new\node_modules\@parcel\watcher\src\wasm\WasmBackend.cc134113813753052474 0
 100C:\Dev\website-project\frontend-new\node_modules\caniuse-lite\data\features\background-attachment.js134113813758135637 0
 77C:\Dev\website-project\node_modules\@babel\types\lib\converters\toKeyAlias.js134113807572230828 0
@@ -25856,6 +25856,7 @@
 77C:\Dev\website-project\frontend-new\.parcel-cache\87b13178f246ebd5-AssetGraph134113824560048469 0
 58C:\Dev\website-project\frontend-new\.parcel-cache\data.mdb134113824559279658 0
 58C:\Dev\website-project\frontend-new\.parcel-cache\lock.mdb134113813924955316 0
+42C:\Dev\website-project\frontend\index.html134114281580270153 0
 48C:\Dev\website-project\dist\favicon.38d394c2.ico134113706294599258 0
 55C:\Dev\website-project\dist\website-project.59712999.js134113797602048576 0
 59C:\Dev\website-project\dist\website-project.5da0c038.js.map134113706295443877 0
