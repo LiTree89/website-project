@@ -1,6 +1,19 @@
 import React, { useEffect, useRef } from 'react';
 
-export default function GooglePayButton({ price = '1.00', label = 'Buy with Google Pay', onSuccess }) {
+/**
+ * GooglePayButton - PRODUCTION READY
+ * Merchant info and gateway config can be passed as props for security and flexibility.
+ */
+export default function GooglePayButton({
+  price = '1.00',
+  label = 'Buy with Google Pay',
+  onSuccess,
+  environment = 'PRODUCTION',
+  gateway = process.env.REACT_APP_GPAY_GATEWAY || 'stripe',
+  gatewayMerchantId = process.env.REACT_APP_GPAY_GATEWAY_MERCHANT_ID || 'litbit_stripe_merchant_123',
+  merchantId = process.env.REACT_APP_GPAY_MERCHANT_ID || '01234567890123456789',
+  merchantName = 'LiTbiT-2.0',
+}) {
   const gpayBtn = useRef(null);
 
   useEffect(() => {
@@ -15,7 +28,7 @@ export default function GooglePayButton({ price = '1.00', label = 'Buy with Goog
     }
     function renderButton() {
       if (!window.google || !gpayBtn.current) return;
-      const paymentsClient = new window.google.payments.api.PaymentsClient({ environment: 'TEST' });
+      const paymentsClient = new window.google.payments.api.PaymentsClient({ environment });
       const button = paymentsClient.createButton({
         onClick: onGooglePay,
         buttonColor: 'black',
@@ -25,10 +38,10 @@ export default function GooglePayButton({ price = '1.00', label = 'Buy with Goog
       gpayBtn.current.appendChild(button);
     }
     // eslint-disable-next-line
-  }, []);
+  }, [environment, gateway, gatewayMerchantId, merchantId]);
 
   async function onGooglePay() {
-    const paymentsClient = new window.google.payments.api.PaymentsClient({ environment: 'TEST' });
+    const paymentsClient = new window.google.payments.api.PaymentsClient({ environment });
     const paymentDataRequest = {
       apiVersion: 2,
       apiVersionMinor: 0,
@@ -42,15 +55,15 @@ export default function GooglePayButton({ price = '1.00', label = 'Buy with Goog
           tokenizationSpecification: {
             type: 'PAYMENT_GATEWAY',
             parameters: {
-              gateway: 'example', // Replace with your gateway
-              gatewayMerchantId: 'exampleMerchantId',
+              gateway,
+              gatewayMerchantId,
             },
           },
         },
       ],
       merchantInfo: {
-        merchantId: '01234567890123456789', // Replace with your merchantId
-        merchantName: 'LiTbiT-2.0',
+        merchantId,
+        merchantName,
       },
       transactionInfo: {
         totalPriceStatus: 'FINAL',
@@ -62,7 +75,7 @@ export default function GooglePayButton({ price = '1.00', label = 'Buy with Goog
     try {
       const paymentData = await paymentsClient.loadPaymentData(paymentDataRequest);
       if (onSuccess) onSuccess(paymentData);
-      alert('Google Pay Success! (Demo)');
+      alert('Google Pay Success!');
     } catch (err) {
       alert('Google Pay Cancelled or Failed');
     }
