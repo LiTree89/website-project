@@ -1,7 +1,7 @@
 {
-  "tasks.runOnOpen": "Sync and Setup Project",
-  "terminal.integrated.defaultProfile.windows": "PowerShell",
-  "terminal.integrated.splitCwd": "workspaceRoot"
+    "tasks.runOnOpen": "Sync and Setup Project",
+    "terminal.integrated.defaultProfile.windows": "PowerShell",
+    "terminal.integrated.splitCwd": "workspaceRoot"
 }{
     // --- TERMINAL ---
     "terminal.integrated.defaultProfile.windows": "PowerShell",
