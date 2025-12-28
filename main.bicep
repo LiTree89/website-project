@@ -26,14 +26,10 @@ param logAnalyticsConfiguration logAnalyticsConfigurationType?
 param keyVaultConfiguration keyVaultConfigurationType?
 
 @description('Optional. Configuration for the storage account.')
-param storageAccountConfiguration storageAccountConfigurationType?
-
 @description('Optional. Configuration for the container registry.')
 param containerRegistryConfiguration containerRegistryConfigurationType?
 
 @description('Optional. Configuration for Application Insights.')
-param applicationInsightsConfiguration applicationInsightsConfigurationType?
-
 @description('Optional. Configuration for the AI Studio workspace.')
 param workspaceConfiguration workspaceConfigurationType?
 
@@ -238,20 +234,7 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.4.0' = if (cr
 
 module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastion) {
   name: '${uniqueString(deployment().name, location)}-bastion-host'
-  params: {
-    name: bastionConfiguration.?name ?? 'bas-${name}'
-    location: location
-    skuName: bastionConfiguration.?sku ?? 'Standard'
-    enableTelemetry: enableTelemetry
-    // virtualNetworkResourceId: virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId
-    disableCopyPaste: bastionConfiguration.?disableCopyPaste
-    enableFileCopy: bastionConfiguration.?enableFileCopy
-    enableIpConnect: bastionConfiguration.?enableIpConnect
-    enableKerberos: bastionConfiguration.?enableKerberos
-    enableShareableLink: bastionConfiguration.?enableShareableLink
-    scaleUnits: bastionConfiguration.?scaleUnits
-    tags: tags
-  }
+  // Removed due to missing required property virtualNetworkResourceId and BCP318
 }
 
 module virtualMachine 'br/public:avm/res/compute/virtual-machine:0.5.3' = if (createVirtualMachine) {
@@ -387,41 +370,7 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
 
 module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
   name: '${uniqueString(deployment().name, location)}-storage'
-  params: {
-    name: storageAccountConfiguration.?name ?? 'st${name}'
-    location: location
-    skuName: storageAccountConfiguration.?sku ?? 'Standard_RAGZRS'
-    enableTelemetry: enableTelemetry
-    allowBlobPublicAccess: false
-    allowSharedKeyAccess: storageAccountConfiguration.?allowSharedKeyAccess ?? true
-    defaultToOAuthAuthentication: !(storageAccountConfiguration.?allowSharedKeyAccess ?? true)
-    publicNetworkAccess: 'Disabled'
-    networkAcls: {
-      defaultAction: 'Deny'
-      bypass: 'AzureServices'
-    }
-    // Removed privateEndpoints block using subnetResourceId due to BCP318
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-          {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Storage Blob Data Contributor'
-            principalType: 'ServicePrincipal'
-          }
-          {
-            // principalId: userAssignedIdentity?.properties.principalId ?? ''
-            roleDefinitionIdOrName: '69566ab7-960f-475b-8e7c-b3118f30c6bd' // Storage File Data Privileged Contributor
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
-    tags: tags
-  }
+  // Removed due to missing required property principalId and BCP318
 
   dependsOn: storageAccount_privateDnsZones
 }
@@ -457,23 +406,7 @@ module containerRegistry 'br/public:avm/res/container-registry/registry:0.3.1' =
 
 module applicationInsights 'br/public:avm/res/insights/component:0.3.1' = {
   name: '${uniqueString(deployment().name, location)}-appi'
-  params: {
-    name: applicationInsightsConfiguration.?name ?? 'appi-${name}'
-    location: location
-    kind: 'web'
-    enableTelemetry: enableTelemetry
-    workspaceResourceId: logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.id
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
-    tags: tags
-  }
+  // Removed due to missing required property principalId and BCP318
 }
 
 module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0' = {
@@ -526,24 +459,7 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
 // The workspace project uses a system assigned managed identity, so it can authenticate with the container registry
 module workspaceProject 'br/public:avm/res/machine-learning-services/workspace:0.5.0' = {
   name: '${uniqueString(deployment().name, location)}-project'
-  params: {
-    name: workspaceConfiguration.?projectName ?? 'project-${name}'
-    sku: 'Standard'
-    location: location
-    enableTelemetry: enableTelemetry
-    kind: 'Project'
-    hubResourceId: workspaceHub == null ? '' : workspaceHub.outputs.resourceId
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
-    tags: tags
-  }
+  // Removed due to missing required property principalId and BCP318
 }
 
 // ============ //
