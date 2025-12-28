@@ -1,4 +1,4 @@
-// Optional proxy buy to cover gas (platform pays, user reimburses via LITBIT or fiat)
+// Optional proxy buy to cover gas (platform pays, user reimburses via litlabstudio token or fiat)
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 // Similar structure - call contract.buyToken, reimburse from user wallet
 
