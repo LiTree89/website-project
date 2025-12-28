@@ -25,10 +25,13 @@ module.exports = async function (context, req) {
 };
 // Azure Function: Feed API (Cosmos DB integration)
 const client = require("../backend/cosmos");
+const authenticate = require("../backend/auth");
+const setCors = require("../backend/cors");
 const databaseId = "litbit";
 const containerId = "feed";
 
 module.exports = async function (context, req) {
+  if (!authenticate(context, req)) return;
   const db = client.database(databaseId);
   const container = db.container(containerId);
 
@@ -43,9 +46,25 @@ module.exports = async function (context, req) {
       context.res = { status: 500, body: { error: err.message } };
     }
   } else if (req.method === "POST") {
-    // Add a new post
+    // Add a new post with input validation
     try {
       const post = req.body;
+      if (!post || typeof post !== "object" || !post.user || !post.content) {
+        context.res = {
+          status: 400,
+          body: { error: "Missing required fields: user, content" },
+        };
+        setCors(context);
+        return;
+      }
+      if (typeof post.content !== "string" || post.content.length > 1000) {
+        context.res = {
+          status: 400,
+          body: { error: "Content too long (max 1000 chars)" },
+        };
+        setCors(context);
+        return;
+      }
       post.timestamp = Date.now();
       const { resource } = await container.items.create(post);
       context.res = { status: 201, body: resource };
@@ -55,4 +74,5 @@ module.exports = async function (context, req) {
   } else {
     context.res = { status: 405 };
   }
+  setCors(context);
 };
