@@ -8,7 +8,7 @@
   "keyVaultConfiguration": { "value": null },
   "containerRegistryConfiguration": { "value": null },
   "workspaceConfiguration": { "value": null },
-  "virtualNetworkConfiguration": { "value": null },
-  "bastionConfiguration": { "value": null },
-  "virtualMachineConfiguration": { "value": null }
+  "virtualNetworkConfiguration": { "value": { "enabled": false } },
+  "bastionConfiguration": { "value": { "enabled": false } },
+  "virtualMachineConfiguration": { "value": { "enabled": false } }
 }
