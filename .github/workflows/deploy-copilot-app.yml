@@ -1,7 +1,18 @@
 # Professional GitHub Actions Workflow for Azure App Service (Copilot Engine)
 # Deploys services/copilot-engine/ to litlab-app-copilot using OIDC authentication
 
+
 name: Deploy Copilot Engine App Service
+
+env:
+    AZURE_CLIENT_ID: ${{ secrets.AZURE_CLIENT_ID }}
+    AZURE_TENANT_ID: ${{ secrets.AZURE_TENANT_ID }}
+    AZURE_SUBSCRIPTION_ID: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
+    AZURE_FUNCTION_APP_NAME: ${{ secrets.AZURE_FUNCTION_APP_NAME }}
+    AZURE_BACKEND_APP_NAME: ${{ secrets.AZURE_BACKEND_APP_NAME }}
+    AZURE_COPILOT_APP_NAME: ${{ secrets.AZURE_COPILOT_APP_NAME }}
+    AZURE_STATIC_WEB_APPS_API_TOKEN_PROD: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PROD }}
+    AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
 
 on:
     push:
