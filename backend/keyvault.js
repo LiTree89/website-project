@@ -1,6 +1,6 @@
 // Azure Key Vault integration for secure secret loading
-const { DefaultAzureCredential } = require('@azure/identity');
-const { SecretClient } = require('@azure/keyvault-secrets');
+const { DefaultAzureCredential } = require("@azure/identity");
+const { SecretClient } = require("@azure/keyvault-secrets");
 
 const keyVaultUrl = process.env.KEY_VAULT_URL; // e.g. https://your-keyvault-name.vault.azure.net
 
@@ -11,7 +11,7 @@ if (keyVaultUrl) {
 }
 
 async function getSecret(secretName) {
-  if (!client) throw new Error('Key Vault client not configured');
+  if (!client) throw new Error("Key Vault client not configured");
   const secret = await client.getSecret(secretName);
   return secret.value;
 }
