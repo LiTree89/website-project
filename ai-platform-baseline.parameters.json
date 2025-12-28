@@ -1,5 +1,6 @@
 {
   "location": { "value": "eastus2" },
+  "name": { "value": "baseline01" },
   "workspaceName": { "value": "litreelabstudio-mcp-ws" },
   "adminUserObjectId": { "value": "8e879165-b4a2-48c7-9728-93bacc50d4ed" },
   "enablePrivateEndpoints": { "value": false },
