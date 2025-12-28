@@ -27,6 +27,7 @@ async function findUserByEmail(email) {
 }
 
 // Subscription tiers: 'free', 'premium', 'pro', 'enterprise'
+// Packs: one-time purchases for features/content
 async function createUser({ email, password, name }) {
   const container = await getUserContainer();
   const hash = await bcrypt.hash(password, 10);
@@ -44,9 +45,21 @@ async function createUser({ email, password, name }) {
       paymentProvider: null, // e.g., 'stripe', 'coinbase', 'googlepay'
       history: [], // [{date, amount, provider, status}]
     },
+    packs: [], // [{ packId, name, purchaseDate, price, provider, status }]
   };
   await container.items.create(user);
   return user;
+}
+
+// Add a purchased pack to a user
+async function addUserPack(userId, pack) {
+  const container = await getUserContainer();
+  const { resource } = await container.item(userId, userId).read();
+  if (!resource) throw new Error("User not found");
+  if (!resource.packs) resource.packs = [];
+  resource.packs.push({ ...pack, purchaseDate: new Date().toISOString() });
+  await container.items.upsert(resource);
+  return resource;
 }
 
 async function updateUserSubscription(userId, subscription) {
@@ -70,4 +83,5 @@ module.exports = {
   createUser,
   updateUserSubscription,
   getUserById,
+  addUserPack,
 };

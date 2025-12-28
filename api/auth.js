@@ -16,7 +16,8 @@ module.exports = async function (context, req) {
   setCors(context);
   setSecurityHeaders(context);
   if (req.method === "POST") {
-    const { action, email, password, name, userId, subscription } = req.body || {};
+    const { action, email, password, name, userId, subscription } =
+      req.body || {};
     // Registration and login
     if (action === "register" || action === "login") {
       if (!email || !password || (action === "register" && !name)) {
@@ -43,7 +44,12 @@ module.exports = async function (context, req) {
           status: 201,
           body: {
             token,
-            user: { id: user.id, email: user.email, name: user.name, subscription: user.subscription },
+            user: {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              subscription: user.subscription,
+            },
           },
         };
         return;
@@ -68,7 +74,12 @@ module.exports = async function (context, req) {
           status: 200,
           body: {
             token,
-            user: { id: user.id, email: user.email, name: user.name, subscription: user.subscription },
+            user: {
+              id: user.id,
+              email: user.email,
+              name: user.name,
+              subscription: user.subscription,
+            },
           },
         };
         return;
@@ -77,12 +88,18 @@ module.exports = async function (context, req) {
     // Subscription management
     if (action === "update-subscription") {
       if (!userId || !subscription) {
-        context.res = { status: 400, body: { error: "Missing userId or subscription" } };
+        context.res = {
+          status: 400,
+          body: { error: "Missing userId or subscription" },
+        };
         return;
       }
       try {
         const user = await updateUserSubscription(userId, subscription);
-        context.res = { status: 200, body: { subscription: user.subscription } };
+        context.res = {
+          status: 200,
+          body: { subscription: user.subscription },
+        };
       } catch (err) {
         context.res = { status: 404, body: { error: err.message } };
       }
@@ -97,7 +114,7 @@ module.exports = async function (context, req) {
     }
     try {
       const user = await getUserById(userId);
-      if (!user) throw new Error('User not found');
+      if (!user) throw new Error("User not found");
       context.res = { status: 200, body: { subscription: user.subscription } };
     } catch (err) {
       context.res = { status: 404, body: { error: err.message } };
