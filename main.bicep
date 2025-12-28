@@ -648,31 +648,31 @@ output workspaceHubName string = workspaceHub?.outputs.name ?? ''
 output workspaceHubManagedIdentityPrincipalId string = workspaceHub?.outputs.systemAssignedMIPrincipalId ?? ''
 
 @description('The principal ID of the workspace project system assigned identity.')
-output workspaceProjectManagedIdentityPrincipalId string = workspaceProject.outputs.systemAssignedMIPrincipalId
+output workspaceProjectManagedIdentityPrincipalId string = workspaceProject?.outputs.systemAssignedMIPrincipalId ?? ''
 
 @description('The resource ID of the workspace project.')
-output workspaceProjectResourceId string = workspaceProject.outputs.resourceId
+output workspaceProjectResourceId string = workspaceProject?.outputs.resourceId ?? ''
 
 @description('The name of the workspace project.')
-output workspaceProjectName string = workspaceProject.outputs.name
+output workspaceProjectName string = workspaceProject?.outputs.name ?? ''
 
 @description('The resource ID of the virtual network.')
-output virtualNetworkResourceId string = createVirtualNetwork ? virtualNetwork.outputs.resourceId : ''
+output virtualNetworkResourceId string = createVirtualNetwork ? (virtualNetwork?.outputs.resourceId ?? '') : ''
 
 @description('The name of the virtual network.')
-output virtualNetworkName string = createVirtualNetwork ? virtualNetwork.outputs.name : ''
+output virtualNetworkName string = createVirtualNetwork ? (virtualNetwork?.outputs.name ?? '') : ''
 
 @description('The resource ID of the subnet in the virtual network.')
-output virtualNetworkSubnetResourceId string = createVirtualNetwork ? virtualNetwork.outputs.subnetResourceIds[0] : ''
-
+output virtualNetworkSubnetResourceId string = createVirtualNetwork ? (virtualNetwork?.outputs.subnetResourceIds[0
+] ?? '') : ''
 @description('The name of the subnet in the virtual network.')
-output virtualNetworkSubnetName string = createVirtualNetwork ? virtualNetwork.outputs.subnetNames[0] : ''
-
+output virtualNetworkSubnetName string = createVirtualNetwork ? (virtualNetwork?.outputs.subnetNames[0
+] ?? '') : ''
 @description('The resource ID of the Azure Bastion host.')
-output bastionResourceId string = createBastion ? bastion.outputs.resourceId : ''
+output bastionResourceId string = createBastion ? (bastion?.outputs.resourceId ?? '') : ''
 
 @description('The name of the Azure Bastion host.')
-output bastionName string = createBastion ? bastion.outputs.name : ''
+output bastionName string = createBastion ? (bastion?.outputs.name ?? '') : ''
 
 @description('The resource ID of the virtual machine.')
 output virtualMachineResourceId string = createVirtualMachine ? virtualMachine.outputs.resourceId : ''
