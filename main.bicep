@@ -25,12 +25,9 @@ param logAnalyticsConfiguration logAnalyticsConfigurationType?
 @description('Optional. Configuration for the key vault.')
 param keyVaultConfiguration keyVaultConfigurationType?
 
-@description('Optional. Configuration for the storage account.')
 @description('Optional. Configuration for the container registry.')
 param containerRegistryConfiguration containerRegistryConfigurationType?
 
-@description('Optional. Configuration for Application Insights.')
-@description('Optional. Configuration for the AI Studio workspace.')
 param workspaceConfiguration workspaceConfigurationType?
 
 @description('Optional. Configuration for the virtual network.')
@@ -234,7 +231,20 @@ module virtualNetwork 'br/public:avm/res/network/virtual-network:0.4.0' = if (cr
 
 module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastion) {
   name: '${uniqueString(deployment().name, location)}-bastion-host'
-  // Removed due to missing required property virtualNetworkResourceId and BCP318
+  params: {
+    name: bastionConfiguration.?name ?? 'bas-${name}'
+    location: location
+    skuName: bastionConfiguration.?sku ?? 'Standard'
+    enableTelemetry: enableTelemetry
+    virtualNetworkResourceId: (createVirtualNetwork && virtualNetwork != null) ? virtualNetwork.outputs.resourceId : ''
+    disableCopyPaste: bastionConfiguration.?disableCopyPaste
+    enableFileCopy: bastionConfiguration.?enableFileCopy
+    enableIpConnect: bastionConfiguration.?enableIpConnect
+    enableKerberos: bastionConfiguration.?enableKerberos
+    enableShareableLink: bastionConfiguration.?enableShareableLink
+    scaleUnits: bastionConfiguration.?scaleUnits
+    tags: tags
+  }
 }
 
 module virtualMachine 'br/public:avm/res/compute/virtual-machine:0.5.3' = if (createVirtualMachine) {
@@ -370,8 +380,23 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
 
 module storageAccount 'br/public:avm/res/storage/storage-account:0.11.0' = {
   name: '${uniqueString(deployment().name, location)}-storage'
-  // Removed due to missing required property principalId and BCP318
-
+  params: {
+    name: 'st${name}'
+    location: location
+    skuName: 'Standard_RAGZRS'
+    enableTelemetry: enableTelemetry
+    allowBlobPublicAccess: false
+    allowSharedKeyAccess: true
+    defaultToOAuthAuthentication: false
+    publicNetworkAccess: 'Disabled'
+    networkAcls: {
+      defaultAction: 'Deny'
+      bypass: 'AzureServices'
+    }
+    privateEndpoints: null
+    roleAssignments: null
+    tags: tags
+  }
   dependsOn: storageAccount_privateDnsZones
 }
 
@@ -406,7 +431,15 @@ module containerRegistry 'br/public:avm/res/container-registry/registry:0.3.1' =
 
 module applicationInsights 'br/public:avm/res/insights/component:0.3.1' = {
   name: '${uniqueString(deployment().name, location)}-appi'
-  // Removed due to missing required property principalId and BCP318
+  params: {
+    name: 'appi-${name}'
+    location: location
+    kind: 'web'
+    enableTelemetry: enableTelemetry
+    workspaceResourceId: logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.id
+    roleAssignments: null
+    tags: tags
+  }
 }
 
 module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0' = {
