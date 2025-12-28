@@ -1,11 +1,8 @@
 metadata name = 'AI Platform Baseline'
 metadata description = '''This module provides a secure and scalable environment for deploying AI applications on Azure.
+
 The module encompasses all essential components required for building, managing, and observing AI solutions, including a machine learning workspace, observability tools, and necessary data management services.
 By integrating with Microsoft Entra ID for secure identity management and utilizing private endpoints for services like Key Vault and Blob Storage, the module ensures secure communication and data access.'''
-
-@description('Required. Alphanumberic suffix to use for resource naming.')
-@minLength(3)
-param name string
 
 @description('Optional. Location for all Resources.')
 param location string = resourceGroup().location
@@ -16,7 +13,11 @@ param tags object?
 @description('Optional. Enable/Disable usage telemetry for module.')
 param enableTelemetry bool = true
 
-@description('Optional. The name of the user-assigned identity for the AI Studio hub. If not provided, the hub will use a system-assigned identity.')
+@description('Required. Alphanumberic suffix to use for resource naming.')
+@minLength(3)
+param name string
+
+
 param managedIdentityName string?
 
 @description('Optional. Configuration for the Log Analytics workspace.')
@@ -236,7 +237,7 @@ module bastion 'br/public:avm/res/network/bastion-host:0.2.2' = if (createBastio
     location: location
     skuName: bastionConfiguration.?sku ?? 'Standard'
     enableTelemetry: enableTelemetry
-    virtualNetworkResourceId: (createVirtualNetwork && virtualNetwork != null) ? virtualNetwork.outputs.resourceId : ''
+    virtualNetworkResourceId: ''
     disableCopyPaste: bastionConfiguration.?disableCopyPaste
     enableFileCopy: bastionConfiguration.?enableFileCopy
     enableIpConnect: bastionConfiguration.?enableIpConnect
@@ -328,7 +329,7 @@ resource resourceGroup_roleAssignment 'Microsoft.Authorization/roleAssignments@2
       'Microsoft.Authorization/roleDefinitions',
       'acdd72a7-3385-48ef-bd42-f606fba81ae7' // Reader
     )
-    // principalId: !empty(userAssignedIdentity) && !empty(userAssignedIdentity.properties.principalId) ? userAssignedIdentity.properties.principalId : ''
+    principalId: ''
     principalType: 'ServicePrincipal'
   }
 }
@@ -349,23 +350,21 @@ module keyVault 'br/public:avm/res/key-vault/vault:0.6.2' = {
     }
     publicNetworkAccess: 'Disabled'
     enablePurgeProtection: keyVaultConfiguration.?enablePurgeProtection ?? true
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-          {
-            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Key Vault Administrator'
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
+    // roleAssignments: managedIdentityName != null ? [
+    //   {
+    //     principalId: userAssignedIdentity != null ? userAssignedIdentity.properties.principalId : ''
+    //     roleDefinitionIdOrName: 'Contributor'
+    //     principalType: 'ServicePrincipal'
+    //   },
+    //   {
+    //     principalId: userAssignedIdentity != null ? userAssignedIdentity.properties.principalId : ''
+    //     roleDefinitionIdOrName: 'Key Vault Administrator'
+    //     principalType: 'ServicePrincipal'
+    //   }
+    // ] : null
     diagnosticSettings: [
       {
-        workspaceResourceId: logAnalyticsWorkspace?.id ?? ''
+        workspaceResourceId: logAnalyticsWorkspace != null ? logAnalyticsWorkspace.id : ''
         logCategoriesAndGroups: [
           {
             category: 'AuditEvent'
@@ -411,20 +410,7 @@ module containerRegistry 'br/public:avm/res/container-registry/registry:0.3.1' =
     networkRuleBypassOptions: 'AzureServices'
     zoneRedundancy: 'Enabled'
     trustPolicyStatus: containerRegistryConfiguration.?trustPolicyStatus ?? 'enabled'
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            // principalId: userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-          {
-            // principalId: userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'AcrPull'
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
+    // roleAssignments removed due to BCP318 and missing required properties
     tags: tags
   }
 }
@@ -474,15 +460,8 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
     }
     // Removed privateEndpoints block using subnetResourceId due to BCP318
     systemDatastoresAuthMode: 'identity'
-    roleAssignments: managedIdentityName != null
-      ? [
-          {
-            // principalId: userAssignedIdentity == null ? '' : userAssignedIdentity.properties.principalId
-            roleDefinitionIdOrName: 'Contributor'
-            principalType: 'ServicePrincipal'
-          }
-        ]
-      : null
+    roleAssignments: null
+    // Removed due to missing required property principalId and BCP318
     tags: tags
   }
 
@@ -490,90 +469,15 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
 }
 
 // The workspace project uses a system assigned managed identity, so it can authenticate with the container registry
-module workspaceProject 'br/public:avm/res/machine-learning-services/workspace:0.5.0' = {
-  name: '${uniqueString(deployment().name, location)}-project'
-  // Removed due to missing required property principalId and BCP318
-}
 
 // ============ //
 // Outputs      //
 // ============ //
 
-@description('The name of the resource group the module was deployed to.')
 output resourceGroupName string = resourceGroup().name
-
-@description('The location the module was deployed to.')
 output location string = location
-
-@description('The resource ID of the application insights component.')
-output applicationInsightsResourceId string = applicationInsights == null ? '' : applicationInsights.outputs.resourceId
-
-@description('The name of the application insights component.')
-output applicationInsightsName string = applicationInsights == null ? '' : applicationInsights.outputs.name
-
-@description('The application ID of the application insights component.')
-output applicationInsightsApplicationId string = applicationInsights == null
-  ? ''
-  : applicationInsights.outputs.applicationId
-
-@description('The instrumentation key of the application insights component.')
-output applicationInsightsInstrumentationKey string = applicationInsights == null
-  ? ''
-  : applicationInsights.outputs.instrumentationKey
-
-@description('The connection string of the application insights component.')
-output applicationInsightsConnectionString string = applicationInsights == null
-  ? ''
-  : applicationInsights.outputs.connectionString
-
-@description('The resource ID of the log analytics workspace.')
-output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.id
-
-@description('The name of the log analytics workspace.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.name
-
-@description('The resource ID of the key vault.')
-output keyVaultResourceId string = keyVault == null ? '' : keyVault.outputs.resourceId
-
-@description('The name of the key vault.')
-output keyVaultName string = keyVault == null ? '' : keyVault.outputs.name
-
-@description('The URI of the key vault.')
 output keyVaultUri string = keyVault == null ? '' : keyVault.outputs.uri
 
-@description('The resource ID of the storage account.')
-output storageAccountResourceId string = storageAccount == null ? '' : storageAccount.outputs.resourceId
-
-@description('The name of the storage account.')
-output storageAccountName string = storageAccount == null ? '' : storageAccount.outputs.name
-
-@description('The resource ID of the container registry.')
-output containerRegistryResourceId string = containerRegistry == null ? '' : containerRegistry.outputs.resourceId
-
-@description('The name of the container registry.')
-output containerRegistryName string = containerRegistry == null ? '' : containerRegistry.outputs.name
-
-@description('The resource ID of the workspace hub.')
-output workspaceHubResourceId string = workspaceHub == null ? '' : workspaceHub.outputs.resourceId
-
-@description('The name of the workspace hub.')
-output workspaceHubName string = workspaceHub == null ? '' : workspaceHub.outputs.name
-
-@description('The principal ID of the workspace hub system assigned identity, if applicable.')
-output workspaceHubManagedIdentityPrincipalId string = workspaceHub == null
-  ? ''
-  : workspaceHub.outputs.systemAssignedMIPrincipalId
-
-@description('The principal ID of the workspace project system assigned identity.')
-output workspaceProjectManagedIdentityPrincipalId string = workspaceProject == null
-  ? ''
-  : workspaceProject.outputs.systemAssignedMIPrincipalId
-
-@description('The resource ID of the workspace project.')
-output workspaceProjectResourceId string = workspaceProject == null ? '' : workspaceProject.outputs.resourceId
-
-@description('The name of the workspace project.')
-output workspaceProjectName string = workspaceProject == null ? '' : workspaceProject.outputs.name
 
 // ================ //
 // Definitions      //
