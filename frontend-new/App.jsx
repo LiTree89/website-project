@@ -11,6 +11,7 @@ import ProtectedRoute from "./src/components/auth/ProtectedRoute";
 import LoginPage from "./src/pages/LoginPage.jsx";
 import RegisterPage from "./src/pages/RegisterPage.jsx";
 import FeedPage from "./src/pages/FeedPage.jsx";
+import PacksPage from "./src/pages/PacksPage.jsx";
 import ProfilePage from "./src/pages/ProfilePage.jsx";
 import ChatPage from "./src/pages/ChatPage.jsx";
 import AgentPage from "./src/pages/AgentPage.jsx";
@@ -67,6 +68,7 @@ function DarkModeToggle({ className = "" }) {
                   <Route path="/agent" element={<ProtectedRoute><AgentPage /></ProtectedRoute>} />
                   <Route path="/media" element={<ProtectedRoute><MediaPage /></ProtectedRoute>} />
                   <Route path="/pay" element={<ProtectedRoute><PaymentDemo /></ProtectedRoute>} />
+                  <Route path="/packs" element={<ProtectedRoute><PacksPage /></ProtectedRoute>} />
                   <Route path="*" element={<Navigate to="/feed" replace />} />
                 </Routes>
               </div>
