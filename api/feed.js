@@ -8,7 +8,7 @@ module.exports = async function (context, req) {
         {
           id: "post1",
           user: "Drip God",
-          content: "Welcome to LiTbiT-2.0!",
+          content: "Welcome to litlabstudio!",
           timestamp: Date.now(),
         },
         {
@@ -28,7 +28,7 @@ const { getClient } = require("../backend/cosmos");
 const authenticate = require("../backend/auth");
 const setCors = require("../backend/cors");
 const setSecurityHeaders = require("../backend/securityHeaders");
-const databaseId = "litbit";
+const databaseId = "litlabstudio";
 const containerId = "feed";
 
 module.exports = async function (context, req) {
