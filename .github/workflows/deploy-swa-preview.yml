@@ -1,47 +1,37 @@
 # Professional GitHub Actions Workflow for Azure Static Web Apps (Preview/Staging)
 # Deploys frontend-new/ to litlab-swa-preview using OIDC authentication
 
-name: Deploy SWA Preview
+name: Deploy SWA (preview / frontend-new)
 
 on:
-    push:
-        branches:
-            - preview
-        paths:
-            - "frontend-new/**"
-            - ".github/workflows/deploy-swa-preview.yml"
-
-permissions:
-    id-token: write
-    contents: read
+  push:
+    branches: [ "main" ]
+    paths:
+      - "frontend-new/**"
+      - ".github/workflows/deploy-swa-preview.yml"
 
 jobs:
-    build_and_deploy:
-        runs-on: ubuntu-latest
-        environment: preview
-        steps:
-            - name: Checkout code
-              uses: actions/checkout@v4
+  build_and_deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
 
-            - name: Setup Node.js
-              uses: actions/setup-node@v4
-              with:
-                  node-version: "20.x"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
 
-            - name: Build frontend-new
-              working-directory: frontend-new
-              run: |
-                  npm ci
-                  npm run build
+      - name: Install
+        run: npm ci
+        working-directory: frontend-new
 
-            - name: Deploy to Azure Static Web Apps
-              uses: Azure/static-web-apps-deploy@v1
-              with:
-                  azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
-                  repo_token: ${{ secrets.GITHUB_TOKEN }}
-                  action: "upload"
-                  app_location: "frontend-new"
-                  output_location: "frontend-new/build"
-                  api_location: ""
-                  skip_app_build: true
-                  skip_api_build: true
+      - name: Build
+        run: npm run build
+        working-directory: frontend-new
+
+      - name: Deploy
+        uses: Azure/static-web-apps-deploy@v1
+        with:
+          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_PREVIEW }}
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          app_location: "frontend-new"
+          output_location: "dist"
