@@ -118,7 +118,6 @@ resource storage 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   }
 }
 
-resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
   name: appInsightsName
   location: location
   kind: 'web'
@@ -126,3 +125,37 @@ resource appInsights 'Microsoft.Insights/components@2020-02-02' = {
     Application_Type: 'web'
   }
 }
+
+// ============ //
+// Outputs      //
+// ============ //
+
+@description('The name of the resource group the module was deployed to.')
+output resourceGroupName string = resourceGroup().name
+
+@description('The location the module was deployed to.')
+output location string = location
+
+@description('The name of the Static Web App.')
+output swaProdNameOut string = swaProd.name
+
+@description('The name of the Function App.')
+output funcApiNameOut string = funcApi.name
+
+@description('The name of the Backend App.')
+output backendAppNameOut string = backendApp.name
+
+@description('The name of the Copilot App.')
+output copilotAppNameOut string = copilotApp.name
+
+@description('The name of the SignalR Service.')
+output signalrNameOut string = signalr.name
+
+@description('The name of the Cosmos DB Account.')
+output cosmosNameOut string = cosmos.name
+
+@description('The name of the Storage Account.')
+output storageNameOut string = storage.name
+
+@description('The name of the Application Insights.')
+output appInsightsNameOut string = appInsights.name
