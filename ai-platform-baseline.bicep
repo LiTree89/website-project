@@ -58,7 +58,7 @@ var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?
 
 var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
 
-var subnetResourceId = createVirtualNetwork ? virtualNetwork.outputs.subnetResourceIds[0] : null
+var subnetResourceId = (createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds)) ? virtualNetwork.outputs.subnetResourceIds[0] : null
 
 var mlTargetSubResource = 'amlworkspace'
 
@@ -183,7 +183,7 @@ module workspaceHub_privateDnsZones 'br/public:avm/res/network/private-dns-zone:
       roleAssignments: managedIdentityName != null
         ? [
             {
-              principalId: userAssignedIdentity.properties.principalId
+              principalId: managedIdentityName != null ? userAssignedIdentity.properties.principalId : ''
               roleDefinitionIdOrName: 'Contributor'
               principalType: 'ServicePrincipal'
             }
