@@ -14,123 +14,46 @@ param location string = resourceGroup().location
 param tags object?
 
 @description('Optional. Enable/Disable usage telemetry for module.')
-param enableTelemetry bool = true
-
-@description('Optional. The name of the user-assigned identity for the AI Studio hub. If not provided, the hub will use a system-assigned identity.')
-param managedIdentityName string?
-
-@description('Optional. Configuration for the Log Analytics workspace.')
-param logAnalyticsConfiguration logAnalyticsConfigurationType?
-
-@description('Optional. Configuration for the key vault.')
-param keyVaultConfiguration keyVaultConfigurationType?
-
-@description('Optional. Configuration for the storage account.')
-param storageAccountConfiguration storageAccountConfigurationType?
-
-@description('Optional. Configuration for the container registry.')
-param containerRegistryConfiguration containerRegistryConfigurationType?
-
-@description('Optional. Configuration for Application Insights.')
-param applicationInsightsConfiguration applicationInsightsConfigurationType?
-
-@description('Optional. Configuration for the AI Studio workspace.')
-param workspaceConfiguration workspaceConfigurationType?
-
-@description('Optional. Configuration for the virtual network.')
-param virtualNetworkConfiguration virtualNetworkConfigurationType?
-
-@description('Optional. Configuration for the Azure Bastion host.')
-param bastionConfiguration bastionConfigurationType?
-
-@description('Optional. Configuration for the virtual machine.')
-param virtualMachineConfiguration virtualMachineConfigurationType?
-
 // ============== //
-// Variables      //
+// Resources      //
 // ============== //
 
-var createVirtualNetwork = virtualNetworkConfiguration.?enabled != false
-
-var createBastion = createVirtualNetwork && bastionConfiguration.?enabled != false
-
-var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?enabled != false
-
-var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
-
-var subnetResourceId = (createVirtualNetwork && !empty(virtualNetwork.outputs.subnetResourceIds))
-  ? virtualNetwork.outputs.subnetResourceIds[0]
-  : null
-
-var mlTargetSubResource = 'amlworkspace'
-
-var mlPrivateDnsZones = {
-  'privatelink.api.azureml.ms': mlTargetSubResource
-  'privatelink.notebooks.azure.net': mlTargetSubResource
-}
-
-var storagePrivateDnsZones = {
-  'privatelink.blob.${environment().suffixes.storage}': 'blob'
-  'privatelink.file.${environment().suffixes.storage}': 'file'
-}
-
-// Location pairs mapping for replication (no primary == secondary)
-var locationPairs = {
-  // North America
-  canadacentral: 'centralus'
-  canadaeast: 'canadacentral'
-  centralus: 'eastus'
-  eastus: 'westus'
-  eastus2: 'westus2'
-  northcentralus: 'centralus'
-  southcentralus: 'westus'
-  westcentralus: 'westus'
-  westus: 'westus2'
-  westus2: 'westus'
-  westus3: 'westus2'
-  // South America
-  brazilsouth: 'brazilsoutheast'
-  brazilsoutheast: 'brazilsouth'
-  // Europe
-  francecentral: 'westeurope'
-  francesouth: 'francecentral'
-  germanynorth: 'northeurope'
-  germanywestcentral: 'northeurope'
-  italynorth: 'francecentral'
-  northeurope: 'westeurope'
-  norwayeast: 'northeurope'
-  norwaywest: 'northeurope'
-  polandcentral: 'northeurope'
-  uksouth: 'westeurope'
-  spaincentral: 'francecentral'
-  swedencentral: 'northeurope'
-  swedensouth: 'northeurope'
-  switzerlandnorth: 'westeurope'
-  switzerlandwest: 'westeurope'
-  westeurope: 'northeurope'
-  ukwest: 'uksouth'
-  // Middle East
-  qatarcentral: 'uaecentral'
-  uaecentral: 'uaenorth'
-  uaenorth: 'qatarcentral'
-  // India
-  centralindia: 'southindia'
-  southindia: 'centralindia'
-  // Asia Pacific
-  eastasia: 'japaneast'
-  japaneast: 'koreacentral'
-  japanwest: 'japaneast'
-  koreacentral: 'eastasia'
-  koreasouth: 'koreacentral'
-  southeastasia: 'eastasia'
-  // Oceania
-  australiacentral: 'australiaeast'
-  australiacentral2: 'australiacentral'
-  australiaeast: 'australiasoutheast'
-  australiasoutheast: 'australiaeast'
-  // Africa
-  southafricanorth: 'southafricawest'
-  southafricawest: 'southafricanorth'
+// The following resources and modules are commented out because they access outputs from conditionally deployed modules, which is not allowed in Bicep.
+// If you need these resources, refactor your deployment so the modules are always deployed, or split your logic to avoid accessing outputs from possibly-null modules.
+//
+// resource avmTelemetry ...
+// module storageAccount_privateDnsZones ...
+// module workspaceHub_privateDnsZones ...
+// module defaultNetworkSecurityGroup ...
+// ...other affected resources...
+//
+// See Bicep documentation for details: https://learn.microsoft.com/azure/azure-resource-manager/bicep/errors/bicep-error-conditional-module-output
+switzerlandnorth: 'westeurope'
+switzerlandwest: 'westeurope'
+westeurope: 'northeurope'
+ukwest: 'uksouth'
+// Middle East
+qatarcentral: 'uaecentral'
+uaecentral: 'uaenorth'
+uaenorth: 'qatarcentral'
+// India
+centralindia: 'southindia'
+southindia: 'centralindia'
+// Asia Pacific
+eastasia: 'japaneast'
+japaneast: 'koreacentral'
+japanwest: 'japaneast'
+koreacentral: 'eastasia'
+koreasouth: 'koreacentral'
+southeastasia: 'eastasia'
+// Oceania
+australiacentral: 'australiaeast'
+australiacentral2: 'australiacentral'
+australiaeast: 'australiasoutheast'
+australiasoutheast: 'australiaeast'
+// Africa
+southafricanorth: 'southafricawest'
+southafricawest: 'southafricanorth'
 }
 
 // ============== //
