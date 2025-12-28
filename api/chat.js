@@ -1,6 +1,7 @@
 // Azure Function: Chat API (SignalR negotiation)
 const authenticate = require("../backend/auth");
 const setCors = require("../backend/cors");
+const setSecurityHeaders = require("../backend/securityHeaders");
 
 module.exports = async function (context, req) {
   if (!authenticate(context, req)) return;
@@ -17,7 +18,10 @@ module.exports = async function (context, req) {
     }
     const url = process.env.SIGNALR_URL;
     if (!url) {
-      context.res = { status: 500, body: { error: 'SignalR URL not configured' } };
+      context.res = {
+        status: 500,
+        body: { error: "SignalR URL not configured" },
+      };
       setCors(context);
       return;
     }
@@ -32,4 +36,5 @@ module.exports = async function (context, req) {
     context.res = { status: 405 };
   }
   setCors(context);
+  setSecurityHeaders(context);
 };

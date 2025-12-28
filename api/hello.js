@@ -1,5 +1,6 @@
 // Azure Functions HTTP trigger for Static Web Apps
 const setCors = require("../backend/cors");
+const setSecurityHeaders = require("../backend/securityHeaders");
 
 module.exports = async function (context, req) {
   context.log("HTTP trigger function processed a request.");
@@ -9,4 +10,5 @@ module.exports = async function (context, req) {
     body: { message: "Hello from Azure Functions API!" },
   };
   setCors(context);
+  setSecurityHeaders(context);
 };

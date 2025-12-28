@@ -1,6 +1,7 @@
 // Azure Function: User API
 const authenticate = require("../backend/auth");
 const setCors = require("../backend/cors");
+const setSecurityHeaders = require("../backend/securityHeaders");
 
 module.exports = async function (context, req) {
   if (!authenticate(context, req)) return;
@@ -28,4 +29,5 @@ module.exports = async function (context, req) {
     context.res = { status: 405 };
   }
   setCors(context);
+  setSecurityHeaders(context);
 };

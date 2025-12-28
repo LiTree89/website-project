@@ -24,14 +24,16 @@ module.exports = async function (context, req) {
   }
 };
 // Azure Function: Feed API (Cosmos DB integration)
-const client = require("../backend/cosmos");
+const { getClient } = require("../backend/cosmos");
 const authenticate = require("../backend/auth");
 const setCors = require("../backend/cors");
+const setSecurityHeaders = require("../backend/securityHeaders");
 const databaseId = "litbit";
 const containerId = "feed";
 
 module.exports = async function (context, req) {
   if (!authenticate(context, req)) return;
+  const client = await getClient();
   const db = client.database(databaseId);
   const container = db.container(containerId);
 
@@ -75,4 +77,5 @@ module.exports = async function (context, req) {
     context.res = { status: 405 };
   }
   setCors(context);
+  setSecurityHeaders(context);
 };
