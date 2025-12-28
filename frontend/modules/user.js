@@ -2,10 +2,10 @@
 // Handles user profiles, authentication, friends/follow, and settings
 
 export default {
-  name: 'user',
+  name: "user",
   init(app) {
     // Register user routes, state, and UI
-    app.registerRoute('/profile', () => import('./UserProfile.js'));
+    app.registerRoute("/profile", () => import("./UserProfile.js"));
     // ...more user logic
-  }
+  },
 };

@@ -26,26 +26,26 @@ const app = {
   loadTheme(name, theme) {
     this.themes[name] = theme;
     // Apply theme logic here
-  }
+  },
 };
 
 // Example: Load core modules
-import userModule from './modules/user.js';
-import feedModule from './modules/feed.js';
-import chatModule from './modules/chat.js';
-import mediaModule from './modules/media.js';
+import userModule from "./modules/user.js";
+import feedModule from "./modules/feed.js";
+import chatModule from "./modules/chat.js";
+import mediaModule from "./modules/media.js";
 
-app.loadModule('user', userModule);
-app.loadModule('feed', feedModule);
-app.loadModule('chat', chatModule);
-app.loadModule('media', mediaModule);
+app.loadModule("user", userModule);
+app.loadModule("feed", feedModule);
+app.loadModule("chat", chatModule);
+app.loadModule("media", mediaModule);
 
 // Example: Load a plugin
-import samplePlugin from './plugins/samplePlugin.js';
-app.loadPlugin('samplePlugin', samplePlugin);
+import samplePlugin from "./plugins/samplePlugin.js";
+app.loadPlugin("samplePlugin", samplePlugin);
 
 // Example: Load a theme
-import defaultTheme from './themes/defaultTheme.js';
-app.loadTheme('defaultTheme', defaultTheme);
+import defaultTheme from "./themes/defaultTheme.js";
+app.loadTheme("defaultTheme", defaultTheme);
 
 export default app;

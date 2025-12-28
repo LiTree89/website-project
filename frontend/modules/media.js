@@ -2,10 +2,10 @@
 // Handles image, video, and audio sharing
 
 export default {
-  name: 'media',
+  name: "media",
   init(app) {
     // Register media routes, state, and UI
-    app.registerRoute('/media', () => import('./MediaView.js'));
+    app.registerRoute("/media", () => import("./MediaView.js"));
     // ...more media logic
-  }
+  },
 };
