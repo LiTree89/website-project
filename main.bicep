@@ -639,13 +639,13 @@ output containerRegistryResourceId string = containerRegistry?.outputs.resourceI
 output containerRegistryName string = containerRegistry?.outputs.name ?? ''
 
 @description('The resource ID of the workspace hub.')
-output workspaceHubResourceId string = workspaceHub.outputs.resourceId
+output workspaceHubResourceId string = workspaceHub?.outputs.resourceId ?? ''
 
 @description('The name of the workspace hub.')
-output workspaceHubName string = workspaceHub.outputs.name
+output workspaceHubName string = workspaceHub?.outputs.name ?? ''
 
 @description('The principal ID of the workspace hub system assigned identity, if applicable.')
-output workspaceHubManagedIdentityPrincipalId string = workspaceHub.outputs.systemAssignedMIPrincipalId
+output workspaceHubManagedIdentityPrincipalId string = workspaceHub?.outputs.systemAssignedMIPrincipalId ?? ''
 
 @description('The principal ID of the workspace project system assigned identity.')
 output workspaceProjectManagedIdentityPrincipalId string = workspaceProject.outputs.systemAssignedMIPrincipalId
