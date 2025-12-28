@@ -1,77 +1,69 @@
 {
-    "name": "Honeycomb",
+    "name": "Honeycomb Vision",
     "type": "dark",
     "colors": {
-        "editor.background": "#191724",
-        "editor.foreground": "#e0def4",
-        "editorCursor.foreground": "#f6c177",
-        "editor.lineHighlightBackground": "#26233a",
-        "editor.selectionBackground": "#31748f55",
-        "editor.inactiveSelectionBackground": "#26233a",
-        "editorIndentGuide.background": "#26233a",
-        "editorIndentGuide.activeBackground": "#f6c177",
-        "activityBar.background": "#1f1d2e",
-        "sideBar.background": "#1f1d2e",
-        "statusBar.background": "#1f1d2e",
-        "tab.activeBackground": "#191724",
-        "tab.inactiveBackground": "#1f1d2e",
-        "tab.activeForeground": "#e0def4",
-        "tab.inactiveForeground": "#6e6a86"
+        "editor.background": "#1a1026", // deep purple
+        "editor.foreground": "#ffe066", // honey yellow
+        "editorCursor.foreground": "#ffd700", // gold
+        "editor.lineHighlightBackground": "#3d2067", // purple highlight
+        "editor.selectionBackground": "#ffd70055", // gold highlight
+        "editor.inactiveSelectionBackground": "#3d2067",
+        "editorIndentGuide.background": "#2d1743",
+        "editorIndentGuide.activeBackground": "#ffd700",
+        "activityBar.background": "#2d1743",
+        "sideBar.background": "#2d1743",
+        "statusBar.background": "#2d1743",
+        "tab.activeBackground": "#1a1026",
+        "tab.inactiveBackground": "#2d1743",
+        "tab.activeForeground": "#ffe066",
+        "tab.inactiveForeground": "#b39ddb",
+        "titleBar.activeBackground": "#3d2067",
+        "titleBar.activeForeground": "#ffd700",
+        "titleBar.inactiveBackground": "#2d1743",
+        "titleBar.inactiveForeground": "#ffe066",
+        "button.background": "#ffd700",
+        "button.foreground": "#3d2067",
+        "button.hoverBackground": "#ffe066",
+        "badge.background": "#ffd700",
+        "badge.foreground": "#3d2067",
+        "list.activeSelectionBackground": "#ffd70033",
+        "list.inactiveSelectionBackground": "#3d206733",
+        "list.hoverBackground": "#ffe06633",
+        "editorLineNumber.foreground": "#b39ddb",
+        "editorLineNumber.activeForeground": "#ffd700"
     },
     "tokenColors": [
         {
-            "scope": [
-                "comment",
-                "punctuation.definition.comment"
-            ],
-            "settings": {
-                "foreground": "#6e6a86"
-            }
+            "scope": ["comment", "punctuation.definition.comment"],
+            "settings": { "foreground": "#b39ddb" } // soft purple
         },
         {
-            "scope": [
-                "string",
-                "constant.other.symbol"
-            ],
-            "settings": {
-                "foreground": "#ebbcba"
-            }
+            "scope": ["string", "constant.other.symbol"],
+            "settings": { "foreground": "#ffe066" } // honey yellow
         },
         {
-            "scope": [
-                "variable",
-                "meta.definition.variable"
-            ],
-            "settings": {
-                "foreground": "#f6c177"
-            }
+            "scope": ["variable", "meta.definition.variable"],
+            "settings": { "foreground": "#ffd700" } // gold
         },
         {
-            "scope": [
-                "keyword",
-                "storage.type"
-            ],
-            "settings": {
-                "foreground": "#9ccfd8"
-            }
+            "scope": ["keyword", "storage.type"],
+            "settings": { "foreground": "#a259f7" } // vibrant purple
         },
         {
-            "scope": [
-                "entity.name.function",
-                "support.function"
-            ],
-            "settings": {
-                "foreground": "#c4a7e7"
-            }
+            "scope": ["entity.name.function", "support.function"],
+            "settings": { "foreground": "#ffb300" } // bold yellow-orange
         },
         {
-            "scope": [
-                "constant.numeric",
-                "constant.language"
-            ],
-            "settings": {
-                "foreground": "#eb6f92"
-            }
+            "scope": ["constant.numeric", "constant.language"],
+            "settings": { "foreground": "#f6c177" } // gold accent
+        },
+        {
+            "scope": ["entity.name.class", "support.class"],
+            "settings": { "foreground": "#a259f7" } // purple
+        },
+        {
+            "scope": ["punctuation", "meta.brace"],
+            "settings": { "foreground": "#ffd700" } // gold
         }
     ]
 }
