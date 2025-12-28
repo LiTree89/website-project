@@ -1,4 +1,6 @@
 import React from 'react';
+import GooglePayButton from './GooglePayButton.jsx';
+
 export default function UserProfile() {
   return (
     <div>
@@ -10,6 +12,7 @@ export default function UserProfile() {
         </div>
         <div style={{ marginTop: 8 }}>90000x Vibes Only</div>
         <div style={{ marginTop: 8, color: '#888' }}>Settings and profile editing coming soon.</div>
+        <GooglePayButton price="1.00" label="Tip Drip God $1" onSuccess={() => alert('Thanks for your tip! (Demo)')} />
       </div>
     </div>
   );

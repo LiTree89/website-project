@@ -22,7 +22,7 @@ website-project/
 ├── package.json                        # Project metadata, scripts, dependencies (Parcel, serve, etc.)
 ├── README.md                           # Project documentation and deployment instructions
 ├── SITE-BLUEPRINT.md                   # (This file) Full project blueprint
-├── vercel.json                         # Vercel config (not used for Azure SWA)
+
 │
 ├── src/                                # Source files for the static site
 │   ├── index.html                      # Main HTML entry point
@@ -50,7 +50,7 @@ website-project/
 - **deploy-mcp-server-azure-cli.txt**: Script for deploying MCP server to Azure.
 - **package.json**: Defines project scripts (start, build, test), dependencies (Parcel, serve), and metadata.
 - **README.md**: Instructions for local development, deployment (Azure SWA, GitHub Pages, Netlify), and customization.
-- **vercel.json**: Vercel deployment config (not used for Azure SWA).
+
 - **src/**: Contains all static site source files.
   - **index.html**: Main HTML file loaded by browsers.
   - **favicon.ico**: Website icon.
@@ -83,7 +83,7 @@ website-project/
 - **Azure Static Web Apps**: Handles static site hosting and serverless API endpoints.
 - **Parcel**: Bundles and builds the static site from `src/` to `dist/`.
 - **GitHub Actions**: Automates build and deployment.
-- **Netlify/Vercel**: Alternative deployment options (not primary for this setup).
+- **Netlify**: Alternative deployment option (not primary for this setup).
 
 ---
 

@@ -8,16 +8,28 @@ export default function FeedView() {
   const [content, setContent] = useState('');
   const [posting, setPosting] = useState(false);
 
+  async function loadPosts() {
+    setLoading(true);
+    setError(null);
+    try {
+      const data = await fetchPosts();
+      setPosts(Array.isArray(data) ? data : []);
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  }
+
   useEffect(() => {
-    fetchPosts()
-      .then(setPosts)
-      .catch(e => setError(e.message))
-      .finally(() => setLoading(false));
+    loadPosts();
+    // eslint-disable-next-line
   }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
     setPosting(true);
+    setError(null);
     try {
       const newPost = await addPost({ user: 'Drip God', content });
       setPosts([newPost, ...posts]);
@@ -47,6 +59,7 @@ export default function FeedView() {
       {loading && <p>Loading...</p>}
       {error && <p style={{ color: 'red' }}>{error}</p>}
       <div>
+        {!loading && posts.length === 0 && <p style={{ color: '#888' }}>No posts yet. Be the first to post!</p>}
         {posts.map(post => (
           <div key={post.id || post.timestamp} style={{ background: '#222', margin: '10px 0', padding: 16, borderRadius: 8 }}>
             <b>{post.user}</b> <span style={{ color: '#888', fontSize: 12 }}>{new Date(post.timestamp).toLocaleString()}</span>

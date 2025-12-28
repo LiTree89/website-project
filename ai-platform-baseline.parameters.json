@@ -1,8 +1,14 @@
 {
   "location": { "value": "eastus2" },
   "name": { "value": "baseline01" },
-  "workspaceName": { "value": "litreelabstudio-mcp-ws" },
-  "adminUserObjectId": { "value": "8e879165-b4a2-48c7-9728-93bacc50d4ed" },
-  "enablePrivateEndpoints": { "value": false },
-  "tags": { "value": { "env": "dev", "project": "trusted-mcp" } }
+  "tags": { "value": { "env": "dev", "project": "trusted-mcp" } },
+  "enableTelemetry": { "value": true },
+  "managedIdentityName": { "value": null },
+  "logAnalyticsConfiguration": { "value": null },
+  "keyVaultConfiguration": { "value": null },
+  "containerRegistryConfiguration": { "value": null },
+  "workspaceConfiguration": { "value": null },
+  "virtualNetworkConfiguration": { "value": null },
+  "bastionConfiguration": { "value": null },
+  "virtualMachineConfiguration": { "value": null }
 }
