@@ -1,4 +1,11 @@
 import React, { useState } from "react";
+import AppBar from "@mui/material/AppBar";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+import IconButton from "@mui/material/IconButton";
+import Box from "@mui/material/Box";
+import SupportIcon from "@mui/icons-material/VolunteerActivism";
 import UserProfile from "./modules/UserProfile";
 import FeedView from "./modules/FeedView";
 import ChatView from "./modules/ChatView";
@@ -90,60 +97,60 @@ export default function App() {
         flexDirection: "column",
       }}
     >
-      {/* Top Bar */}
-      <header
-        style={{
-          background: "#23272F",
-          padding: "16px 32px",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "space-between",
-          boxShadow: "0 2px 8px #0002",
-        }}
-      >
-        <div style={{ fontWeight: 700, fontSize: 28, letterSpacing: 1 }}>
-          LiTree Social
-        </div>
-        <nav style={{ display: "flex", gap: 24 }}>
-          {NAV.map((n) => (
-            <button
-              key={n.key}
-              onClick={() => setRoute(n.key)}
-              style={{
-                background: route === n.key ? "#3A3F4B" : "transparent",
+      {/* Top Bar with Material UI */}
+      <AppBar position="static" sx={{ background: "#23272F", boxShadow: 2 }}>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Typography variant="h5" sx={{ fontWeight: 700, letterSpacing: 1 }}>
+            LiTree Social
+          </Typography>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            {NAV.map((n) => (
+              <Button
+                key={n.key}
+                onClick={() => setRoute(n.key)}
+                variant={route === n.key ? "contained" : "text"}
+                sx={{
+                  background: route === n.key ? "#3A3F4B" : "transparent",
+                  color: "#fff",
+                  fontWeight: route === n.key ? 700 : 400,
+                  borderRadius: 2,
+                  px: 2.5,
+                  py: 1.2,
+                  fontSize: 18,
+                  textTransform: "none",
+                  '&:hover': { background: "#3A8DFF", color: "#fff" },
+                }}
+                startIcon={<span>{n.icon}</span>}
+              >
+                {n.label}
+              </Button>
+            ))}
+            <Button
+              onClick={() => setShowSupport(true)}
+              variant="contained"
+              color="primary"
+              sx={{
+                background: "#3A8DFF",
                 color: "#fff",
-                border: "none",
-                borderRadius: 6,
-                padding: "10px 18px",
+                fontWeight: 700,
+                borderRadius: 2,
+                px: 2.5,
+                py: 1.2,
                 fontSize: 18,
-                cursor: "pointer",
-                fontWeight: route === n.key ? 700 : 400,
-                transition: "background 0.2s",
+                ml: 2,
+                textTransform: "none",
+                boxShadow: 1,
               }}
+              startIcon={<SupportIcon />}
             >
-              <span style={{ marginRight: 8 }}>{n.icon}</span>
-              {n.label}
-            </button>
-          ))}
-          <button
-            onClick={() => setShowSupport(true)}
-            style={{
-              background: "#3A8DFF",
-              color: "#fff",
-              border: "none",
-              borderRadius: 6,
-              padding: "10px 18px",
-              fontSize: 18,
-              fontWeight: 700,
-              marginLeft: 16,
-              cursor: "pointer",
-            }}
-          >
-            Support 💸
-          </button>
-        </nav>
-        <div style={{ fontSize: 16, color: "#aaa" }}>Welcome, Drip God</div>
-      </header>
+              Support
+            </Button>
+          </Box>
+          <Typography variant="body1" sx={{ color: "#aaa", ml: 3 }}>
+            Welcome, Drip God
+          </Typography>
+        </Toolbar>
+      </AppBar>
       {/* Main Content */}
       <div
         style={{
