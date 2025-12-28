@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Sync and Setup Project",
+      "type": "shell",
+      "command": "git pull && npm install && cd frontend && npm install && cd ../frontend-new && npm install && cd ../services/copilot-engine && npm install && cd ../../..",
+      "problemMatcher": [],
+      "group": "build",
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      }
+    }
+  ]
+}
