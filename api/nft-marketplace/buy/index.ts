@@ -1,4 +1,5 @@
-// Optional proxy buy to cover gas (platform pays, user reimburses via litlabstudio token or fiat)
+// Optional proxy buy to cover gas (platform pays, user reimburses via LiTbiT coin or fiat)
+const COIN_NAME = 'LiTbiT'; // Use LiTbiT as the coin for all buy operations
 import { AzureFunction, Context, HttpRequest } from "@azure/functions";
 // Similar structure - call contract.buyToken, reimburse from user wallet
 

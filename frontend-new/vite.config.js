@@ -9,4 +9,7 @@ export default defineConfig({
   server: {
     open: true,
   },
+  define: {
+    __APP_NAME__: JSON.stringify('litlabstudio'),
+  },
 });
