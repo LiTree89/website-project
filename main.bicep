@@ -525,7 +525,9 @@ module workspaceHub 'br/public:avm/res/machine-learning-services/workspace:0.5.0
           ]
         }
       : null
-    primaryUserAssignedIdentity: managedIdentityName != null ? (userAssignedIdentity == null ? null : userAssignedIdentity.id) : null
+    primaryUserAssignedIdentity: managedIdentityName != null
+      ? (userAssignedIdentity == null ? null : userAssignedIdentity.id)
+      : null
     computes: workspaceConfiguration.?computes
     managedNetworkSettings: {
       isolationMode: workspaceConfiguration.?networkIsolationMode ?? 'AllowInternetOutbound'
@@ -597,88 +599,108 @@ output resourceGroupName string = resourceGroup().name
 output location string = location
 
 @description('The resource ID of the application insights component.')
-output applicationInsightsResourceId string = applicationInsights?.outputs.resourceId ?? ''
+output applicationInsightsResourceId string = applicationInsights == null ? '' : applicationInsights.outputs.resourceId
 
 @description('The name of the application insights component.')
-output applicationInsightsName string = applicationInsights?.outputs.name ?? ''
+output applicationInsightsName string = applicationInsights == null ? '' : applicationInsights.outputs.name
 
 @description('The application ID of the application insights component.')
-output applicationInsightsApplicationId string = applicationInsights?.outputs.applicationId ?? ''
+output applicationInsightsApplicationId string = applicationInsights == null
+  ? ''
+  : applicationInsights.outputs.applicationId
 
 @description('The instrumentation key of the application insights component.')
-output applicationInsightsInstrumentationKey string = applicationInsights?.outputs.instrumentationKey ?? ''
+output applicationInsightsInstrumentationKey string = applicationInsights == null
+  ? ''
+  : applicationInsights.outputs.instrumentationKey
 
 @description('The connection string of the application insights component.')
-output applicationInsightsConnectionString string = applicationInsights?.outputs.connectionString ?? ''
+output applicationInsightsConnectionString string = applicationInsights == null
+  ? ''
+  : applicationInsights.outputs.connectionString
 
 @description('The resource ID of the log analytics workspace.')
-output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace?.id ?? ''
+output logAnalyticsWorkspaceResourceId string = logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.id
 
 @description('The name of the log analytics workspace.')
-output logAnalyticsWorkspaceName string = logAnalyticsWorkspace?.name ?? ''
+output logAnalyticsWorkspaceName string = logAnalyticsWorkspace == null ? '' : logAnalyticsWorkspace.name
 
 @description('The resource ID of the key vault.')
-output keyVaultResourceId string = keyVault?.outputs.resourceId ?? ''
+output keyVaultResourceId string = keyVault == null ? '' : keyVault.outputs.resourceId
 
 @description('The name of the key vault.')
-output keyVaultName string = keyVault?.outputs.name ?? ''
+output keyVaultName string = keyVault == null ? '' : keyVault.outputs.name
 
 @description('The URI of the key vault.')
-output keyVaultUri string = keyVault?.outputs.uri ?? ''
+output keyVaultUri string = keyVault == null ? '' : keyVault.outputs.uri
 
 @description('The resource ID of the storage account.')
-output storageAccountResourceId string = storageAccount?.outputs.resourceId ?? ''
+output storageAccountResourceId string = storageAccount == null ? '' : storageAccount.outputs.resourceId
 
 @description('The name of the storage account.')
-output storageAccountName string = storageAccount?.outputs.name ?? ''
+output storageAccountName string = storageAccount == null ? '' : storageAccount.outputs.name
 
 @description('The resource ID of the container registry.')
-output containerRegistryResourceId string = containerRegistry?.outputs.resourceId ?? ''
+output containerRegistryResourceId string = containerRegistry == null ? '' : containerRegistry.outputs.resourceId
 
 @description('The name of the container registry.')
-output containerRegistryName string = containerRegistry?.outputs.name ?? ''
+output containerRegistryName string = containerRegistry == null ? '' : containerRegistry.outputs.name
 
 @description('The resource ID of the workspace hub.')
-output workspaceHubResourceId string = workspaceHub?.outputs.resourceId ?? ''
+output workspaceHubResourceId string = workspaceHub == null ? '' : workspaceHub.outputs.resourceId
 
 @description('The name of the workspace hub.')
-output workspaceHubName string = workspaceHub?.outputs.name ?? ''
+output workspaceHubName string = workspaceHub == null ? '' : workspaceHub.outputs.name
 
 @description('The principal ID of the workspace hub system assigned identity, if applicable.')
-output workspaceHubManagedIdentityPrincipalId string = workspaceHub?.outputs.systemAssignedMIPrincipalId ?? ''
+output workspaceHubManagedIdentityPrincipalId string = workspaceHub == null
+  ? ''
+  : workspaceHub.outputs.systemAssignedMIPrincipalId
 
 @description('The principal ID of the workspace project system assigned identity.')
-output workspaceProjectManagedIdentityPrincipalId string = workspaceProject?.outputs.systemAssignedMIPrincipalId ?? ''
+output workspaceProjectManagedIdentityPrincipalId string = workspaceProject == null
+  ? ''
+  : workspaceProject.outputs.systemAssignedMIPrincipalId
 
 @description('The resource ID of the workspace project.')
-output workspaceProjectResourceId string = workspaceProject?.outputs.resourceId ?? ''
+output workspaceProjectResourceId string = workspaceProject == null ? '' : workspaceProject.outputs.resourceId
 
 @description('The name of the workspace project.')
-output workspaceProjectName string = workspaceProject?.outputs.name ?? ''
+output workspaceProjectName string = workspaceProject == null ? '' : workspaceProject.outputs.name
 
 @description('The resource ID of the virtual network.')
-output virtualNetworkResourceId string = createVirtualNetwork ? (virtualNetwork?.outputs.resourceId ?? '') : ''
+output virtualNetworkResourceId string = createVirtualNetwork
+  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.resourceId)
+  : ''
 
 @description('The name of the virtual network.')
-output virtualNetworkName string = createVirtualNetwork ? (virtualNetwork?.outputs.name ?? '') : ''
+output virtualNetworkName string = createVirtualNetwork
+  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.name)
+  : ''
 
 @description('The resource ID of the subnet in the virtual network.')
-output virtualNetworkSubnetResourceId string = createVirtualNetwork ? (virtualNetwork?.outputs.subnetResourceIds[0
-] ?? '') : ''
+output virtualNetworkSubnetResourceId string = createVirtualNetwork
+  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.subnetResourceIds[0])
+  : ''
 @description('The name of the subnet in the virtual network.')
-output virtualNetworkSubnetName string = createVirtualNetwork ? (virtualNetwork?.outputs.subnetNames[0
-] ?? '') : ''
+output virtualNetworkSubnetName string = createVirtualNetwork
+  ? (virtualNetwork == null ? '' : virtualNetwork.outputs.subnetNames[0])
+  : ''
 @description('The resource ID of the Azure Bastion host.')
-output bastionResourceId string = createBastion ? (bastion?.outputs.resourceId ?? '') : ''
+output bastionResourceId string = createBastion ? (bastion == null ? '' : bastion.outputs.resourceId) : ''
 
 @description('The name of the Azure Bastion host.')
-output bastionName string = createBastion ? (bastion?.outputs.name ?? '') : ''
+output bastionName string = createBastion ? (bastion == null ? '' : bastion.outputs.name) : ''
 
 @description('The resource ID of the virtual machine.')
-output virtualMachineResourceId string = createVirtualMachine ? (virtualMachine?.outputs.resourceId ?? '') : ''
+output virtualMachineResourceId string = createVirtualMachine
+  ? (virtualMachine == null ? '' : virtualMachine.outputs.resourceId)
+  : ''
 
 @description('The name of the virtual machine.')
-output virtualMachineName string = createVirtualMachine ? (virtualMachine?.outputs.name ?? '') : ''
+output virtualMachineName string = createVirtualMachine
+  ? (virtualMachine == null ? '' : virtualMachine.outputs.name)
+  : ''
 
 // ================ //
 // Definitions      //
@@ -744,16 +766,12 @@ type applicationInsightsConfigurationType = {
 type workspaceConfigurationType = {
   @description('Optional. The name of the AI Studio workspace hub.')
   name: string?
-
   @description('Optional. The name of the AI Studio workspace project.')
   projectName: string?
-
   @description('Optional. Computes to create and attach to the workspace hub.')
   computes: array?
-
   @description('Optional. The network isolation mode of the workspace hub. Defaults to \'AllowInternetOutbound\'.')
   networkIsolationMode: 'AllowInternetOutbound' | 'AllowOnlyApprovedOutbound'?
-
   @description('Optional. The outbound rules for the managed network of the workspace hub.')
   networkOutboundRules: networkOutboundRuleType?
 }
@@ -762,10 +780,8 @@ type workspaceConfigurationType = {
 type virtualNetworkSubnetConfigurationType = {
   @description('Optional. The name of the subnet to create.')
   name: string?
-
   @description('Optional. The address prefix of the subnet to create.')
   addressPrefix: string?
-
   @description('Optional. The resource ID of an existing network security group to associate with the subnet.')
   networkSecurityGroupResourceId: string?
 }
@@ -775,13 +791,10 @@ type virtualNetworkSubnetConfigurationType = {
 type virtualNetworkConfigurationType = {
   @description('Optional. Whether to create an associated virtual network. Defaults to \'true\'.')
   enabled: bool?
-
   @description('Optional. The name of the virtual network to create.')
   name: string?
-
   @description('Optional. The address prefix of the virtual network to create.')
   addressPrefix: string?
-
   @description('Optional. Configuration for the virual network subnet.')
   subnet: virtualNetworkSubnetConfigurationType?
 }
@@ -791,34 +804,24 @@ type virtualNetworkConfigurationType = {
 type bastionConfigurationType = {
   @description('Optional. Whether to create a Bastion host in the virtual network. Defaults to \'true\'.')
   enabled: bool?
-
   @description('Optional. The name of the Bastion host to create.')
   name: string?
-
   @description('Optional. The SKU of the Bastion host to create.')
   sku: 'Basic' | 'Standard'?
-
   @description('Optional. The resource ID of an existing network security group to associate with the Azure Bastion subnet.')
   networkSecurityGroupResourceId: string?
-
   @description('Optional. The address prefix of the Azure Bastion subnet.')
   subnetAddressPrefix: string?
-
   @description('Optional. Choose to disable or enable Copy Paste.')
   disableCopyPaste: bool?
-
   @description('Optional. Choose to disable or enable File Copy.')
   enableFileCopy: bool?
-
   @description('Optional. Choose to disable or enable IP Connect.')
   enableIpConnect: bool?
-
   @description('Optional. Choose to disable or enable Kerberos authentication.')
   enableKerberos: bool?
-
   @description('Optional. Choose to disable or enable Shareable Link.')
   enableShareableLink: bool?
-
   @description('Optional. The scale units for the Bastion Host resource.')
   scaleUnits: int?
 }
