@@ -1,8 +1,11 @@
 {
     "tasks.runOnOpen": "Sync and Setup Project",
     "terminal.integrated.defaultProfile.windows": "PowerShell",
-    "terminal.integrated.splitCwd": "workspaceRoot"
-}{
+    "terminal.integrated.splitCwd": "workspaceRoot",
+    "workbench.colorCustomizations": {},
+    "workbench.colorTheme": "Honeycomb",
+    "workbench.colorCustomizations.honeycomb": "./.vscode/honeycomb-color-theme.json"
+}
     // --- TERMINAL ---
     "terminal.integrated.defaultProfile.windows": "PowerShell",
     "terminal.integrated.profiles.windows": {
