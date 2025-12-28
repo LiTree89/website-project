@@ -75,7 +75,7 @@ export default function App() {
           </div>
         </div>
         {/* Global Floating Dock */}
-        <FloatingDock userId={'mockUser'} />
+        <FloatingDock userId={"mockUser"} />
       </div>
     </Router>
   );
