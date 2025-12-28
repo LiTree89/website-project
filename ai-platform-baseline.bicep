@@ -2,7 +2,7 @@
 // Minimal, deployable Azure baseline for website-project
 
 param location string = resourceGroup().location
-param swaProdName string = 'litlab-swa-prod'
+// param swaProdName string = 'litlab-swa-prod'
 param funcApiName string = 'litlab-func-api'
 param backendAppName string = 'litlab-app-backend'
 param copilotAppName string = 'litlab-app-copilot'
@@ -12,13 +12,7 @@ param storageName string = 'litlabstorage'
 param keyVaultName string = 'litlab-kv'
 param appInsightsName string = 'litlab-insights'
 
-resource swaProd 'Microsoft.Web/staticSites@2023-01-01' = {
-  name: swaProdName
-  location: location
-  sku: {
-    name: 'Standard'
-  }
-}
+// Static Web App resource is commented out. Uncomment and configure if needed.
 
 resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
   name: funcApiName
@@ -29,7 +23,7 @@ resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'Node|20'
+      linuxFxVersion: 'NODE|20-lts'
     }
     httpsOnly: true
   }
@@ -44,7 +38,7 @@ resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'Node|20'
+      linuxFxVersion: 'NODE|20-lts'
     }
     httpsOnly: true
   }
@@ -59,7 +53,7 @@ resource copilotApp 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'Node|20'
+      linuxFxVersion: 'NODE|20-lts'
     }
     httpsOnly: true
   }
@@ -153,8 +147,8 @@ output resourceGroupName string = resourceGroup().name
 @description('The location the module was deployed to.')
 output location string = location
 
-@description('The name of the Static Web App.')
-output swaProdNameOut string = swaProd.name
+// @description('The name of the Static Web App.')
+// output swaProdNameOut string = swaProd.name
 
 @description('The name of the Function App.')
 output funcApiNameOut string = funcApi.name
