@@ -15,22 +15,26 @@ import PaymentDemo from "./src/components/PaymentDemo.jsx";
 import NeonDivider from "./src/components/NeonDivider.jsx";
 import FloatingDock from "./src/components/FloatingDock.jsx";
 
-
 // Dark mode toggle for dock
 function DarkModeToggle({ className = "" }) {
-  const [dark, setDark] = useState(() =>
-    window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+  const [dark, setDark] = useState(
+    () =>
+      window.matchMedia &&
+      window.matchMedia("(prefers-color-scheme: dark)").matches
   );
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', dark);
+    document.documentElement.classList.toggle("dark", dark);
   }, [dark]);
   return (
     <button
-      className={"px-4 py-2 rounded-glass bg-glass/70 dark:bg-glassDark/80 backdrop-blur-glass shadow-glass border border-white/10 text-lg font-bold text-accent hover:shadow-neon transition-glass " + className}
+      className={
+        "px-4 py-2 rounded-glass bg-glass/70 dark:bg-glassDark/80 backdrop-blur-glass shadow-glass border border-white/10 text-lg font-bold text-accent hover:shadow-neon transition-glass " +
+        className
+      }
       onClick={() => setDark((d) => !d)}
       aria-label="Toggle dark mode"
     >
-      {dark ? '🌙' : '☀️'}
+      {dark ? "🌙" : "☀️"}
     </button>
   );
 }
@@ -40,7 +44,7 @@ export default function App() {
     <Router>
       <div
         className="relative min-h-screen bg-gradient-hero bg-cover bg-center dark:bg-gradient-hero2 text-white transition-colors duration-500"
-        style={{ minHeight: '100vh' }}
+        style={{ minHeight: "100vh" }}
       >
         <div className="absolute inset-0 bg-black/60 dark:bg-black/80 pointer-events-none z-0" />
         {/* Grainy overlay for cyberpunk drip */}
