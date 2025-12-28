@@ -10,6 +10,6 @@ export default defineConfig({
     open: true,
   },
   define: {
-    __APP_NAME__: JSON.stringify('litlabstudio'),
+    __APP_NAME__: JSON.stringify("litlabstudio"),
   },
 });
