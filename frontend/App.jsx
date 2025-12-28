@@ -118,7 +118,7 @@ export default function App() {
                   py: 1.2,
                   fontSize: 18,
                   textTransform: "none",
-                  '&:hover': { background: "#3A8DFF", color: "#fff" },
+                  "&:hover": { background: "#3A8DFF", color: "#fff" },
                 }}
                 startIcon={<span>{n.icon}</span>}
               >

@@ -59,8 +59,9 @@ var createVirtualMachine = createVirtualNetwork && virtualMachineConfiguration.?
 var createDefaultNsg = virtualNetworkConfiguration.?subnet.networkSecurityGroupResourceId == null
 
 var subnetResourceId = (createVirtualNetwork && !empty(virtualNetwork.outputs?.subnetResourceIds ?? []))
-  ? virtualNetwork.outputs?.subnetResourceIds[0] ?? null
-  : null
+  ? virtualNetwork.outputs?.subnetResourceIds[0
+] ?? null
+: null
 
 var mlTargetSubResource = 'amlworkspace'
 
@@ -665,11 +666,11 @@ output virtualNetworkResourceId string = createVirtualNetwork ? virtualNetwork.o
 output virtualNetworkName string = createVirtualNetwork ? virtualNetwork.outputs?.name ?? '' : ''
 
 @description('The resource ID of the subnet in the virtual network.')
-output virtualNetworkSubnetResourceId string = createVirtualNetwork ? (virtualNetwork.outputs?.subnetResourceIds[0] ?? '') : ''
-
+output virtualNetworkSubnetResourceId string = createVirtualNetwork ? (virtualNetwork.outputs?.subnetResourceIds[0
+] ?? '') : ''
 @description('The name of the subnet in the virtual network.')
-output virtualNetworkSubnetName string = createVirtualNetwork ? (virtualNetwork.outputs?.subnetNames[0] ?? '') : ''
-
+output virtualNetworkSubnetName string = createVirtualNetwork ? (virtualNetwork.outputs?.subnetNames[0
+] ?? '') : ''
 @description('The resource ID of the Azure Bastion host.')
 output bastionResourceId string = createBastion ? bastion.outputs?.resourceId ?? '' : ''
 
