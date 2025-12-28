@@ -34,36 +34,76 @@
     },
     "tokenColors": [
         {
-            "scope": ["comment", "punctuation.definition.comment"],
-            "settings": { "foreground": "#b39ddb" } // soft purple
+            "scope": [
+                "comment",
+                "punctuation.definition.comment"
+            ],
+            "settings": {
+                "foreground": "#b39ddb"
+            } // soft purple
         },
         {
-            "scope": ["string", "constant.other.symbol"],
-            "settings": { "foreground": "#ffe066" } // honey yellow
+            "scope": [
+                "string",
+                "constant.other.symbol"
+            ],
+            "settings": {
+                "foreground": "#ffe066"
+            } // honey yellow
         },
         {
-            "scope": ["variable", "meta.definition.variable"],
-            "settings": { "foreground": "#ffd700" } // gold
+            "scope": [
+                "variable",
+                "meta.definition.variable"
+            ],
+            "settings": {
+                "foreground": "#ffd700"
+            } // gold
         },
         {
-            "scope": ["keyword", "storage.type"],
-            "settings": { "foreground": "#a259f7" } // vibrant purple
+            "scope": [
+                "keyword",
+                "storage.type"
+            ],
+            "settings": {
+                "foreground": "#a259f7"
+            } // vibrant purple
         },
         {
-            "scope": ["entity.name.function", "support.function"],
-            "settings": { "foreground": "#ffb300" } // bold yellow-orange
+            "scope": [
+                "entity.name.function",
+                "support.function"
+            ],
+            "settings": {
+                "foreground": "#ffb300"
+            } // bold yellow-orange
         },
         {
-            "scope": ["constant.numeric", "constant.language"],
-            "settings": { "foreground": "#f6c177" } // gold accent
+            "scope": [
+                "constant.numeric",
+                "constant.language"
+            ],
+            "settings": {
+                "foreground": "#f6c177"
+            } // gold accent
         },
         {
-            "scope": ["entity.name.class", "support.class"],
-            "settings": { "foreground": "#a259f7" } // purple
+            "scope": [
+                "entity.name.class",
+                "support.class"
+            ],
+            "settings": {
+                "foreground": "#a259f7"
+            } // purple
         },
         {
-            "scope": ["punctuation", "meta.brace"],
-            "settings": { "foreground": "#ffd700" } // gold
+            "scope": [
+                "punctuation",
+                "meta.brace"
+            ],
+            "settings": {
+                "foreground": "#ffd700"
+            } // gold
         }
     ]
 }
