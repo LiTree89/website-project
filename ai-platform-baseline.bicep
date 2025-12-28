@@ -23,7 +23,7 @@ resource funcApi 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'NODE|20-lts'
+      linuxFxVersion: 'NODE|20'
     }
     httpsOnly: true
   }
@@ -38,7 +38,7 @@ resource backendApp 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'NODE|20-lts'
+      linuxFxVersion: 'NODE|20'
     }
     httpsOnly: true
   }
@@ -53,7 +53,7 @@ resource copilotApp 'Microsoft.Web/sites@2023-01-01' = {
   }
   properties: {
     siteConfig: {
-      linuxFxVersion: 'NODE|20-lts'
+      linuxFxVersion: 'NODE|20'
     }
     httpsOnly: true
   }
