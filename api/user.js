@@ -2,32 +2,35 @@
 const authenticate = require("../backend/auth");
 const setCors = require("../backend/cors");
 const setSecurityHeaders = require("../backend/securityHeaders");
+const { findUserByEmail } = require("../backend/userDb");
 
 module.exports = async function (context, req) {
+  setCors(context);
+  setSecurityHeaders(context);
   if (!authenticate(context, req)) return;
-  // Example: Get user profile (replace with Cosmos DB logic)
   if (req.method === "GET") {
-    // Example: In future, require id param for user lookup
-    // if (!req.query || !req.query.id) {
-    //   context.res = { status: 400, body: { error: 'Missing user id' } };
-    //   setCors(context);
-    //   return;
-    // }
+    // Get user profile from Cosmos DB using JWT user email
+    const user = req.user;
+    if (!user || !user.email) {
+      context.res = { status: 400, body: { error: "Missing user info" } };
+      return;
+    }
+    const dbUser = await findUserByEmail(user.email);
+    if (!dbUser) {
+      context.res = { status: 404, body: { error: "User not found" } };
+      return;
+    }
     context.res = {
       status: 200,
-      body: { id: "user123", name: "Drip God", avatar: "/avatars/dripgod.png" },
+      body: { id: dbUser.id, email: dbUser.email, name: dbUser.name },
     };
   } else if (req.method === "POST" || req.method === "PUT") {
-    // Scaffold: Add input validation for user updates here
     context.res = {
       status: 400,
       body: { error: "User update not implemented" },
     };
-    setCors(context);
     return;
   } else {
     context.res = { status: 405 };
   }
-  setCors(context);
-  setSecurityHeaders(context);
 };
