@@ -6,7 +6,7 @@
     "_generator": {
       "name": "bicep",
       "version": "0.39.26.7824",
-      "templateHash": "1740170306486982336"
+      "templateHash": "9911618255319126939"
     },
     "name": "AI Platform Baseline",
     "description": "This module provides a secure and scalable environment for deploying AI applications on Azure.\nThe module encompasses all essential components required for building, managing, and observing AI solutions, including a machine learning workspace, observability tools, and necessary data management services.\nBy integrating with Microsoft Entra ID for secure identity management and utilizing private endpoints for services like Key Vault and Blob Storage, the module ensures secure communication and data access."
@@ -3906,7 +3906,7 @@
               }
             ]
           },
-          "roleAssignments": "[if(not(equals(parameters('managedIdentityName'), null())), createObject('value', createArray(createObject('principalId', reference('userAssignedIdentity').principalId, 'roleDefinitionIdOrName', 'Contributor', 'principalType', 'ServicePrincipal'))), createObject('value', null()))]"
+          "roleAssignments": "[if(not(equals(parameters('managedIdentityName'), null())), createObject('value', createArray(createObject('principalId', if(not(equals(parameters('managedIdentityName'), null())), reference('userAssignedIdentity').principalId, ''), 'roleDefinitionIdOrName', 'Contributor', 'principalType', 'ServicePrincipal'))), createObject('value', null()))]"
         },
         "template": {
           "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
@@ -18419,7 +18419,7 @@
               "bypass": "AzureServices"
             }
           },
-          "privateEndpoints": "[if(not(equals(if(variables('createVirtualNetwork'), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), null())), createObject('value', map(items(variables('storagePrivateDnsZones')), lambda('zone', createObject('name', format('pep-{0}-{1}', lambdaVariables('zone').value, parameters('name')), 'customNetworkInterfaceName', format('nic-{0}-{1}', lambdaVariables('zone').value, parameters('name')), 'service', lambdaVariables('zone').value, 'subnetResourceId', coalesce(if(variables('createVirtualNetwork'), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), ''), 'privateDnsZoneResourceIds', createArray(resourceId('Microsoft.Network/privateDnsZones', lambdaVariables('zone').key)))))), createObject('value', null()))]",
+          "privateEndpoints": "[if(not(equals(if(and(variables('createVirtualNetwork'), not(empty(reference('virtualNetwork').outputs.subnetResourceIds.value))), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), null())), createObject('value', map(items(variables('storagePrivateDnsZones')), lambda('zone', createObject('name', format('pep-{0}-{1}', lambdaVariables('zone').value, parameters('name')), 'customNetworkInterfaceName', format('nic-{0}-{1}', lambdaVariables('zone').value, parameters('name')), 'service', lambdaVariables('zone').value, 'subnetResourceId', coalesce(if(and(variables('createVirtualNetwork'), not(empty(reference('virtualNetwork').outputs.subnetResourceIds.value))), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), ''), 'privateDnsZoneResourceIds', createArray(resourceId('Microsoft.Network/privateDnsZones', lambdaVariables('zone').key)))))), createObject('value', null()))]",
           "roleAssignments": "[if(not(equals(parameters('managedIdentityName'), null())), createObject('value', createArray(createObject('principalId', reference('userAssignedIdentity').principalId, 'roleDefinitionIdOrName', 'Contributor', 'principalType', 'ServicePrincipal'), createObject('principalId', reference('userAssignedIdentity').principalId, 'roleDefinitionIdOrName', 'Storage Blob Data Contributor', 'principalType', 'ServicePrincipal'), createObject('principalId', reference('userAssignedIdentity').principalId, 'roleDefinitionIdOrName', '69566ab7-960f-475b-8e7c-b3118f30c6bd', 'principalType', 'ServicePrincipal'))), createObject('value', null()))]",
           "tags": {
             "value": "[parameters('tags')]"
@@ -25929,7 +25929,7 @@
               "outboundRules": "[tryGet(parameters('workspaceConfiguration'), 'networkOutboundRules')]"
             }
           },
-          "privateEndpoints": "[if(not(equals(if(variables('createVirtualNetwork'), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), null())), createObject('value', createArray(createObject('name', format('pep-{0}-{1}', variables('mlTargetSubResource'), parameters('name')), 'customNetworkInterfaceName', format('nic-{0}-{1}', variables('mlTargetSubResource'), parameters('name')), 'service', variables('mlTargetSubResource'), 'subnetResourceId', coalesce(if(variables('createVirtualNetwork'), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), ''), 'privateDnsZoneGroup', createObject('privateDnsZoneGroupConfigs', map(objectKeys(variables('mlPrivateDnsZones')), lambda('zone', createObject('name', replace(lambdaVariables('zone'), '.', '-'), 'privateDnsZoneResourceId', resourceId('Microsoft.Network/privateDnsZones', lambdaVariables('zone'))))))))), createObject('value', null()))]",
+          "privateEndpoints": "[if(not(equals(if(and(variables('createVirtualNetwork'), not(empty(reference('virtualNetwork').outputs.subnetResourceIds.value))), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), null())), createObject('value', createArray(createObject('name', format('pep-{0}-{1}', variables('mlTargetSubResource'), parameters('name')), 'customNetworkInterfaceName', format('nic-{0}-{1}', variables('mlTargetSubResource'), parameters('name')), 'service', variables('mlTargetSubResource'), 'subnetResourceId', coalesce(if(and(variables('createVirtualNetwork'), not(empty(reference('virtualNetwork').outputs.subnetResourceIds.value))), reference('virtualNetwork').outputs.subnetResourceIds.value[0], null()), ''), 'privateDnsZoneGroup', createObject('privateDnsZoneGroupConfigs', map(objectKeys(variables('mlPrivateDnsZones')), lambda('zone', createObject('name', replace(lambdaVariables('zone'), '.', '-'), 'privateDnsZoneResourceId', resourceId('Microsoft.Network/privateDnsZones', lambdaVariables('zone'))))))))), createObject('value', null()))]",
           "systemDatastoresAuthMode": {
             "value": "identity"
           },
