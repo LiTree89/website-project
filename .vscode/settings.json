@@ -3,8 +3,10 @@
     "terminal.integrated.defaultProfile.windows": "PowerShell",
     "terminal.integrated.splitCwd": "workspaceRoot",
     "workbench.colorCustomizations": {},
-    "workbench.colorTheme": "Honeycomb Vision",
-    "workbench.colorCustomizations.honeycomb-vision": "./.vscode/honeycomb-color-theme.json",
+    "workbench.colorTheme": "Default Dark Modern",
+    "window.autoDetectColorScheme": true,
+    "workbench.preferredDarkColorTheme": "Default Dark Modern",
+    "workbench.preferredLightColorTheme": "Default Light Modern",
 }
 // --- TERMINAL ---
 "terminal.integrated.defaultProfile.windows": "PowerShell",
