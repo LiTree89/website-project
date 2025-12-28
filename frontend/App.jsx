@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import UserProfile from "./modules/UserProfile";
 import FeedView from "./modules/FeedView";
 import ChatView from "./modules/ChatView";
+import ChatAgent from "./modules/ChatAgent";
 import MediaView from "./modules/MediaView";
 import GooglePayButton from "./modules/GooglePayButton.jsx";
 
@@ -9,6 +10,7 @@ const NAV = [
   { key: "feed", label: "Feed", icon: "📰" },
   { key: "profile", label: "Profile", icon: "👤" },
   { key: "chat", label: "Chat", icon: "💬" },
+  { key: "agent", label: "Agent", icon: "🤖" },
   { key: "media", label: "Media", icon: "🎬" },
 ];
 
@@ -19,6 +21,7 @@ export default function App() {
   function renderRoute() {
     if (route === "profile") return <UserProfile />;
     if (route === "chat") return <ChatView />;
+    if (route === "agent") return <ChatAgent />;
     if (route === "media") return <MediaView />;
     // Feed/dashboard with support banner
     return (
