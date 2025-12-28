@@ -49,6 +49,7 @@ module.exports = async function (context, req) {
               email: user.email,
               name: user.name,
               subscription: user.subscription,
+              packs: user.packs || [],
             },
           },
         };
@@ -79,6 +80,7 @@ module.exports = async function (context, req) {
               email: user.email,
               name: user.name,
               subscription: user.subscription,
+              packs: user.packs || [],
             },
           },
         };
