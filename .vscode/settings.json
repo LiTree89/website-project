@@ -28,7 +28,6 @@
     "terminal.integrated.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
     "terminal.integrated.fontSize": 14,
     "terminal.integrated.copyOnSelection": true,
-
     // --- EDITOR ---
     "editor.fontFamily": "Cascadia Code, Consolas, 'Courier New', monospace",
     "editor.fontSize": 16,
@@ -39,9 +38,8 @@
     "editor.formatOnSave": true,
     "editor.renderWhitespace": "all",
     "editor.smoothScrolling": true,
-    "editor.cursorSmoothCaretAnimation": true,
+    "editor.cursorSmoothCaretAnimation": "on",
     "editor.guides.bracketPairs": true,
-
     // --- FILES ---
     "files.autoSave": "onWindowChange",
     "files.trimTrailingWhitespace": true,
@@ -52,17 +50,14 @@
         "**/node_modules": true,
         "**/dist": true
     },
-
     // --- SEARCH ---
     "search.useIgnoreFiles": true,
     "search.useGlobalIgnoreFiles": true,
-
     // --- EXPLORER ---
     "explorer.confirmDelete": false,
     "explorer.confirmDragAndDrop": false,
-
     // --- UI ---
-    "workbench.colorTheme": "Default Dark Modern",
+    "workbench.colorTheme": "Best Themes - Shades of Purple (Super Dark)",
     "workbench.iconTheme": "vs-seti",
     "workbench.startupEditor": "none",
     "workbench.editor.enablePreview": false,
